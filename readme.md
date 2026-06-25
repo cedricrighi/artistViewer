@@ -9,7 +9,17 @@ Visualisation de graphe : Cytoscape.js (à intégrer côté frontend)
 Récupération MusicBrainz : appels HTTP directs (fetch/axios) avec respect du rate-limit (1 req/s)
 Infra : Docker Compose (neo4j, backend, frontend)
 
-État actuel : squelettes backend (Express + TS, endpoint /api/health) et frontend (Vite + React + TS) créés. Neo4j, intégration MusicBrainz et docker-compose à venir.
+État actuel : squelettes backend (Express + TS, endpoints /api/health et /api/health/neo4j) et frontend (Vite + React + TS) créés. Docker Compose en place avec les 3 services (neo4j, backend, frontend). Intégration MusicBrainz et modèle de données à venir.
+
+Lancer le projet
+Depuis la racine du repo (artistViewer/, là où se trouve docker-compose.yaml) :
+
+cp .env.example .env
+docker compose --env-file .env up --build
+
+Backend disponible sur http://localhost:4000 (santé : /api/health, /api/health/neo4j)
+Frontend disponible sur http://localhost:5173
+Neo4j Browser disponible sur http://localhost:7474
 
 Contexte du projet
 Les plateformes musicales contiennent de nombreuses relations entre artistes, morceaux, albums, groupes, collaborations et featuring. Ces relations sont difficiles à représenter dans une base relationnelle classique, mais elles se prêtent très bien à une modélisation sous forme de graphe.
