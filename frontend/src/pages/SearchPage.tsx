@@ -40,7 +40,7 @@ export default function SearchPage() {
   return (
     <section>
       <h1>Rechercher un artiste</h1>
-      <p>Recherchez sur MusicBrainz et importez l'artiste (et ses morceaux) dans Neo4j.</p>
+      <p className="lead">Recherchez sur MusicBrainz et importez l'artiste (et ses morceaux) dans Neo4j.</p>
 
       <form onSubmit={handleSearch} className="search-form">
         <input
@@ -62,16 +62,24 @@ export default function SearchPage() {
           return (
             <li key={artist.id} className="result-card">
               <div>
-                <strong>{artist.name}</strong>
-                {artist.type && <span> · {artist.type}</span>}
-                {artist.country && <span> · {artist.country}</span>}
-                {artist["life-span"]?.begin && <span> · depuis {artist["life-span"]?.begin}</span>}
-                {typeof artist.score === "number" && <span> · score {artist.score}</span>}
+                <div className="result-name">{artist.name}</div>
+                <div className="meta-row">
+                  {artist.type && <span className="badge">{artist.type}</span>}
+                  {artist.country && <span className="badge">{artist.country}</span>}
+                  {artist["life-span"]?.begin && (
+                    <span className="badge">depuis {artist["life-span"]?.begin}</span>
+                  )}
+                  {typeof artist.score === "number" && (
+                    <span className="badge badge-accent">score {artist.score}</span>
+                  )}
+                </div>
                 <div className="mbid">{artist.id}</div>
               </div>
               <div className="result-actions">
                 {state === "done" ? (
-                  <Link to={`/artists/${artist.id}`}>Voir la fiche →</Link>
+                  <Link to={`/artists/${artist.id}`} className="btn btn-ghost">
+                    Voir la fiche →
+                  </Link>
                 ) : (
                   <button
                     type="button"
@@ -79,7 +87,7 @@ export default function SearchPage() {
                     disabled={state === "importing"}
                   >
                     {state === "idle" && "Importer"}
-                    {state === "importing" && "Import en cours..."}
+                    {state === "importing" && "Import..."}
                     {state === "error" && "Réessayer"}
                   </button>
                 )}
