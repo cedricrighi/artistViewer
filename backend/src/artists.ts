@@ -11,7 +11,21 @@ export async function upsertArtist(artist: MusicBrainzArtist): Promise<void> {
            a.country = $country,
            a.disambiguation = $disambiguation,
            a.beginDate = $beginDate,
-           a.endDate = $endDate`,
+           a.endDate = $endDate
+       WITH a
+       CALL {
+         WITH a
+         WITH a WHERE $area IS NOT NULL
+         MERGE (area:Area {mbid: $area.mbid})
+         SET area.name = $area.name, area.type = $area.type
+         MERGE (a)-[:FROM_AREA]->(area)
+       }
+       CALL {
+         WITH a
+         UNWIND $genres AS g
+         MERGE (genre:Genre {name: g.name})
+         MERGE (a)-[:ASSOCIATED_WITH_GENRE]->(genre)
+       }`,
       {
         mbid: artist.id,
         name: artist.name,
@@ -20,6 +34,10 @@ export async function upsertArtist(artist: MusicBrainzArtist): Promise<void> {
         disambiguation: artist.disambiguation ?? null,
         beginDate: artist["life-span"]?.begin ?? null,
         endDate: artist["life-span"]?.end ?? null,
+        area: artist.area
+          ? { mbid: artist.area.id, name: artist.area.name, type: artist.area.type ?? null }
+          : null,
+        genres: (artist.genres ?? []).map((g) => ({ name: g.name })),
       }
     );
   } finally {

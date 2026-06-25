@@ -12,6 +12,17 @@ import {
   getArtistReleases,
   getArtistCollaborations,
   getArtistGraph,
+  listRecordings,
+  getRecording,
+  listReleases,
+  getRelease,
+  getFullGraph,
+  getCollaborationsGraph,
+  statsOverview,
+  topArtists,
+  topCollaborations,
+  topGenres,
+  topRecordings,
 } from "./queries.js";
 
 dotenv.config();
@@ -142,6 +153,120 @@ app.get("/api/graph/artists/:id", async (req, res) => {
     res.json(graph);
   } catch (error) {
     console.error(`[GET /api/graph/artists/${req.params.id}] failed:`, error);
+    res.status(500).json({ message: (error as Error).message });
+  }
+});
+
+function parseLimit(req: express.Request, fallback: number): number {
+  const raw = Number(req.query.limit);
+  return Number.isFinite(raw) && raw > 0 ? Math.floor(raw) : fallback;
+}
+
+app.get("/api/recordings", async (req, res) => {
+  try {
+    res.json(await listRecordings(parseLimit(req, 100)));
+  } catch (error) {
+    console.error("[GET /api/recordings] failed:", error);
+    res.status(500).json({ message: (error as Error).message });
+  }
+});
+
+app.get("/api/recordings/:id", async (req, res) => {
+  try {
+    const recording = await getRecording(req.params.id);
+    if (!recording) {
+      res.status(404).json({ message: "Recording not found" });
+      return;
+    }
+    res.json(recording);
+  } catch (error) {
+    console.error(`[GET /api/recordings/${req.params.id}] failed:`, error);
+    res.status(500).json({ message: (error as Error).message });
+  }
+});
+
+app.get("/api/releases", async (req, res) => {
+  try {
+    res.json(await listReleases(parseLimit(req, 100)));
+  } catch (error) {
+    console.error("[GET /api/releases] failed:", error);
+    res.status(500).json({ message: (error as Error).message });
+  }
+});
+
+app.get("/api/releases/:id", async (req, res) => {
+  try {
+    const release = await getRelease(req.params.id);
+    if (!release) {
+      res.status(404).json({ message: "Release not found" });
+      return;
+    }
+    res.json(release);
+  } catch (error) {
+    console.error(`[GET /api/releases/${req.params.id}] failed:`, error);
+    res.status(500).json({ message: (error as Error).message });
+  }
+});
+
+app.get("/api/graph", async (req, res) => {
+  try {
+    res.json(await getFullGraph(parseLimit(req, 200)));
+  } catch (error) {
+    console.error("[GET /api/graph] failed:", error);
+    res.status(500).json({ message: (error as Error).message });
+  }
+});
+
+app.get("/api/graph/collaborations", async (req, res) => {
+  try {
+    res.json(await getCollaborationsGraph(parseLimit(req, 150)));
+  } catch (error) {
+    console.error("[GET /api/graph/collaborations] failed:", error);
+    res.status(500).json({ message: (error as Error).message });
+  }
+});
+
+app.get("/api/stats/overview", async (_req, res) => {
+  try {
+    res.json(await statsOverview());
+  } catch (error) {
+    console.error("[GET /api/stats/overview] failed:", error);
+    res.status(500).json({ message: (error as Error).message });
+  }
+});
+
+app.get("/api/stats/top-artists", async (req, res) => {
+  try {
+    res.json(await topArtists(parseLimit(req, 10)));
+  } catch (error) {
+    console.error("[GET /api/stats/top-artists] failed:", error);
+    res.status(500).json({ message: (error as Error).message });
+  }
+});
+
+app.get("/api/stats/top-collaborations", async (req, res) => {
+  try {
+    res.json(await topCollaborations(parseLimit(req, 10)));
+  } catch (error) {
+    console.error("[GET /api/stats/top-collaborations] failed:", error);
+    res.status(500).json({ message: (error as Error).message });
+  }
+});
+
+app.get("/api/stats/top-genres", async (req, res) => {
+  try {
+    res.json(await topGenres(parseLimit(req, 10)));
+  } catch (error) {
+    console.error("[GET /api/stats/top-genres] failed:", error);
+    res.status(500).json({ message: (error as Error).message });
+  }
+});
+
+app.get("/api/stats/top-recordings", async (req, res) => {
+  try {
+    res.json(await topRecordings(parseLimit(req, 10)));
+  } catch (error) {
+    console.error("[GET /api/stats/top-recordings] failed:", error);
     res.status(500).json({ message: (error as Error).message });
   }
 });

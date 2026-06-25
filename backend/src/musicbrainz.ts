@@ -73,6 +73,18 @@ async function mbFetchJson<T>(path: string): Promise<T> {
   throw lastError;
 }
 
+export interface MusicBrainzArea {
+  id: string;
+  name: string;
+  type?: string | null;
+}
+
+export interface MusicBrainzGenre {
+  id: string;
+  name: string;
+  count?: number;
+}
+
 export interface MusicBrainzArtist {
   id: string;
   name: string;
@@ -81,6 +93,8 @@ export interface MusicBrainzArtist {
   disambiguation?: string;
   score?: number;
   "life-span"?: { begin?: string; end?: string };
+  area?: MusicBrainzArea | null;
+  genres?: MusicBrainzGenre[];
 }
 
 interface SearchArtistsResponse {
@@ -95,7 +109,7 @@ export async function searchArtists(query: string): Promise<MusicBrainzArtist[]>
 }
 
 export async function lookupArtist(mbid: string): Promise<MusicBrainzArtist> {
-  return mbFetchJson<MusicBrainzArtist>(`/artist/${mbid}?fmt=json`);
+  return mbFetchJson<MusicBrainzArtist>(`/artist/${mbid}?inc=genres&fmt=json`);
 }
 
 export interface MusicBrainzArtistCredit {
@@ -120,6 +134,10 @@ export interface MusicBrainzMedium {
   tracks?: MusicBrainzTrack[];
 }
 
+export interface MusicBrainzLabelInfo {
+  label?: { id: string; name: string } | null;
+}
+
 export interface MusicBrainzRelease {
   id: string;
   title: string;
@@ -128,6 +146,7 @@ export interface MusicBrainzRelease {
   status?: string;
   "release-group"?: { "primary-type"?: string };
   media?: MusicBrainzMedium[];
+  "label-info"?: MusicBrainzLabelInfo[];
 }
 
 interface BrowseReleasesResponse {
@@ -136,13 +155,13 @@ interface BrowseReleasesResponse {
 
 // Browse releases by artist with nested recordings: the recording browse
 // endpoint does not accept `releases` as an inc, so we go releases-first and
-// get releases, their recordings, and per-recording credits in one call.
+// get releases, their recordings, credits, and labels in one call.
 export async function fetchReleasesForArtist(
   artistMbid: string,
   limit = 25
 ): Promise<MusicBrainzRelease[]> {
   const data = await mbFetchJson<BrowseReleasesResponse>(
-    `/release?artist=${artistMbid}&inc=recordings+artist-credits+release-groups&limit=${limit}&fmt=json`
+    `/release?artist=${artistMbid}&inc=recordings+artist-credits+release-groups+labels&limit=${limit}&fmt=json`
   );
   return data.releases ?? [];
 }
