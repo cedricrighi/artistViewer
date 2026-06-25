@@ -1,5 +1,5 @@
 import { getDriver } from "./neo4j.js";
-import type { MusicBrainzRecording } from "./musicbrainz.js";
+import type { MusicBrainzRelease } from "./musicbrainz.js";
 
 interface RecordingParam {
   mbid: string;
@@ -17,30 +17,47 @@ interface RecordingParam {
   collaborators: { id: string; name: string }[];
 }
 
-function toParam(recording: MusicBrainzRecording, artistMbid: string): RecordingParam {
-  return {
-    mbid: recording.id,
-    title: recording.title,
-    length: recording.length ?? null,
-    firstReleaseDate: recording["first-release-date"] ?? null,
-    releases: (recording.releases ?? []).map((release) => ({
+// Flatten the releases-first payload into one entry per (recording, release).
+// We keep only recordings actually credited to the imported artist so that
+// PERFORMED stays accurate; co-credited artists become collaborators.
+function flattenReleases(releases: MusicBrainzRelease[], artistMbid: string): RecordingParam[] {
+  const params: RecordingParam[] = [];
+  for (const release of releases) {
+    const releaseInfo = {
       mbid: release.id,
       title: release.title,
       date: release.date ?? null,
       country: release.country ?? null,
       status: release.status ?? null,
       releaseType: release["release-group"]?.["primary-type"] ?? null,
-    })),
-    collaborators: (recording["artist-credit"] ?? [])
-      .map((credit) => credit.artist)
-      .filter((artist) => artist.id !== artistMbid),
-  };
+    };
+    for (const medium of release.media ?? []) {
+      for (const track of medium.tracks ?? []) {
+        const recording = track.recording;
+        const credits = recording["artist-credit"] ?? [];
+        const performed = credits.some((credit) => credit.artist.id === artistMbid);
+        if (!performed) continue;
+        params.push({
+          mbid: recording.id,
+          title: recording.title,
+          length: recording.length ?? null,
+          firstReleaseDate: recording["first-release-date"] ?? null,
+          releases: [releaseInfo],
+          collaborators: credits
+            .map((credit) => credit.artist)
+            .filter((artist) => artist.id !== artistMbid),
+        });
+      }
+    }
+  }
+  return params;
 }
 
 export async function importRecordingsForArtist(
   artistMbid: string,
-  recordings: MusicBrainzRecording[]
-): Promise<void> {
+  releases: MusicBrainzRelease[]
+): Promise<{ recordings: number }> {
+  const recordingParams = flattenReleases(releases, artistMbid);
   const session = getDriver().session();
   try {
     await session.run(
@@ -74,9 +91,10 @@ export async function importRecordingsForArtist(
        }`,
       {
         artistMbid,
-        recordings: recordings.map((recording) => toParam(recording, artistMbid)),
+        recordings: recordingParams,
       }
     );
+    return { recordings: recordingParams.length };
   } finally {
     await session.close();
   }

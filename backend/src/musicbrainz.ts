@@ -1,17 +1,76 @@
 const MIN_INTERVAL_MS = 1000;
+const MAX_RETRIES = 3;
+const RETRY_BASE_DELAY_MS = 500;
 
 let lastRequestAt = 0;
 let queue: Promise<unknown> = Promise.resolve();
 
+function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 function throttled<T>(fn: () => Promise<T>): Promise<T> {
   const run = queue.then(async () => {
     const wait = Math.max(0, lastRequestAt + MIN_INTERVAL_MS - Date.now());
-    if (wait > 0) await new Promise((r) => setTimeout(r, wait));
+    if (wait > 0) await sleep(wait);
     lastRequestAt = Date.now();
     return fn();
   });
   queue = run.catch(() => undefined);
   return run;
+}
+
+class MusicBrainzError extends Error {
+  constructor(message: string, readonly status?: number) {
+    super(message);
+    this.name = "MusicBrainzError";
+  }
+}
+
+function getBaseUrl(): string {
+  return process.env.MUSICBRAINZ_BASE_URL ?? "https://musicbrainz.org/ws/2";
+}
+
+function getUserAgent(): string {
+  return process.env.MUSICBRAINZ_USER_AGENT ?? "MusicGraph/1.0 (contact@example.com)";
+}
+
+// Retry on transient network failures (ECONNRESET, timeouts — surfaced as
+// TypeError by fetch) and on MusicBrainz rate-limit/unavailable statuses.
+function isRetryable(error: unknown): boolean {
+  if (error instanceof MusicBrainzError) {
+    return error.status === 429 || error.status === 503;
+  }
+  return error instanceof TypeError;
+}
+
+async function fetchJson<T>(path: string): Promise<T> {
+  const res = await fetch(`${getBaseUrl()}${path}`, {
+    headers: { "User-Agent": getUserAgent() },
+  });
+  if (!res.ok) {
+    throw new MusicBrainzError(
+      `MusicBrainz request failed: ${res.status} ${res.statusText}`,
+      res.status
+    );
+  }
+  return (await res.json()) as T;
+}
+
+async function mbFetchJson<T>(path: string): Promise<T> {
+  let lastError: unknown;
+  for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
+    if (attempt > 0) {
+      await sleep(RETRY_BASE_DELAY_MS * 2 ** (attempt - 1));
+    }
+    try {
+      return await throttled(() => fetchJson<T>(path));
+    } catch (error) {
+      lastError = error;
+      if (!isRetryable(error)) throw error;
+    }
+  }
+  throw lastError;
 }
 
 export interface MusicBrainzArtist {
@@ -28,45 +87,37 @@ interface SearchArtistsResponse {
   artists: MusicBrainzArtist[];
 }
 
-function getBaseUrl(): string {
-  return process.env.MUSICBRAINZ_BASE_URL ?? "https://musicbrainz.org/ws/2";
-}
-
-function getUserAgent(): string {
-  return process.env.MUSICBRAINZ_USER_AGENT ?? "MusicGraph/1.0 (contact@example.com)";
-}
-
 export async function searchArtists(query: string): Promise<MusicBrainzArtist[]> {
-  return throttled(async () => {
-    const url = `${getBaseUrl()}/artist?query=${encodeURIComponent(query)}&fmt=json`;
-    const res = await fetch(url, {
-      headers: { "User-Agent": getUserAgent() },
-    });
-    if (!res.ok) {
-      throw new Error(`MusicBrainz search failed: ${res.status} ${res.statusText}`);
-    }
-    const data = (await res.json()) as SearchArtistsResponse;
-    return data.artists ?? [];
-  });
+  const data = await mbFetchJson<SearchArtistsResponse>(
+    `/artist?query=${encodeURIComponent(query)}&fmt=json`
+  );
+  return data.artists ?? [];
 }
 
 export async function lookupArtist(mbid: string): Promise<MusicBrainzArtist> {
-  return throttled(async () => {
-    const url = `${getBaseUrl()}/artist/${mbid}?fmt=json`;
-    const res = await fetch(url, {
-      headers: { "User-Agent": getUserAgent() },
-    });
-    if (!res.ok) {
-      throw new Error(`MusicBrainz lookup failed: ${res.status} ${res.statusText}`);
-    }
-    return (await res.json()) as MusicBrainzArtist;
-  });
+  return mbFetchJson<MusicBrainzArtist>(`/artist/${mbid}?fmt=json`);
 }
 
 export interface MusicBrainzArtistCredit {
   name: string;
   joinphrase?: string;
   artist: { id: string; name: string };
+}
+
+export interface MusicBrainzRecording {
+  id: string;
+  title: string;
+  length?: number;
+  "first-release-date"?: string;
+  "artist-credit"?: MusicBrainzArtistCredit[];
+}
+
+export interface MusicBrainzTrack {
+  recording: MusicBrainzRecording;
+}
+
+export interface MusicBrainzMedium {
+  tracks?: MusicBrainzTrack[];
 }
 
 export interface MusicBrainzRelease {
@@ -76,34 +127,22 @@ export interface MusicBrainzRelease {
   country?: string;
   status?: string;
   "release-group"?: { "primary-type"?: string };
+  media?: MusicBrainzMedium[];
 }
 
-export interface MusicBrainzRecording {
-  id: string;
-  title: string;
-  length?: number;
-  "first-release-date"?: string;
-  "artist-credit"?: MusicBrainzArtistCredit[];
-  releases?: MusicBrainzRelease[];
+interface BrowseReleasesResponse {
+  releases: MusicBrainzRelease[];
 }
 
-interface BrowseRecordingsResponse {
-  recordings: MusicBrainzRecording[];
-}
-
-export async function fetchRecordingsForArtist(
+// Browse releases by artist with nested recordings: the recording browse
+// endpoint does not accept `releases` as an inc, so we go releases-first and
+// get releases, their recordings, and per-recording credits in one call.
+export async function fetchReleasesForArtist(
   artistMbid: string,
   limit = 25
-): Promise<MusicBrainzRecording[]> {
-  return throttled(async () => {
-    const url = `${getBaseUrl()}/recording?artist=${artistMbid}&inc=releases+artist-credits&limit=${limit}&fmt=json`;
-    const res = await fetch(url, {
-      headers: { "User-Agent": getUserAgent() },
-    });
-    if (!res.ok) {
-      throw new Error(`MusicBrainz recordings fetch failed: ${res.status} ${res.statusText}`);
-    }
-    const data = (await res.json()) as BrowseRecordingsResponse;
-    return data.recordings ?? [];
-  });
+): Promise<MusicBrainzRelease[]> {
+  const data = await mbFetchJson<BrowseReleasesResponse>(
+    `/release?artist=${artistMbid}&inc=recordings+artist-credits+release-groups&limit=${limit}&fmt=json`
+  );
+  return data.releases ?? [];
 }
