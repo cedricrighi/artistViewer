@@ -1,0 +1,10 @@
+# Environment files (use .env.example as the template)
+.env
+.env.local
+*.env
+
+# OS / editor
+.DS_Store
+
+# Playwright artifacts
+**/.playwright-mcp/

@@ -5,6 +5,14 @@ import { getDriver, closeDriver } from "./neo4j.js";
 import { searchArtists, lookupArtist, fetchReleasesForArtist } from "./musicbrainz.js";
 import { upsertArtist } from "./artists.js";
 import { importRecordingsForArtist } from "./recordings.js";
+import {
+  listArtists,
+  getArtist,
+  getArtistRecordings,
+  getArtistReleases,
+  getArtistCollaborations,
+  getArtistGraph,
+} from "./queries.js";
 
 dotenv.config();
 
@@ -71,6 +79,70 @@ app.post("/api/import/recordings", async (req, res) => {
   } catch (error) {
     console.error(`[POST /api/import/recordings] failed for mbid=${mbid}:`, error);
     res.status(502).json({ message: (error as Error).message });
+  }
+});
+
+app.get("/api/artists", async (_req, res) => {
+  try {
+    res.json(await listArtists());
+  } catch (error) {
+    console.error("[GET /api/artists] failed:", error);
+    res.status(500).json({ message: (error as Error).message });
+  }
+});
+
+app.get("/api/artists/:id", async (req, res) => {
+  try {
+    const artist = await getArtist(req.params.id);
+    if (!artist) {
+      res.status(404).json({ message: "Artist not found" });
+      return;
+    }
+    res.json(artist);
+  } catch (error) {
+    console.error(`[GET /api/artists/${req.params.id}] failed:`, error);
+    res.status(500).json({ message: (error as Error).message });
+  }
+});
+
+app.get("/api/artists/:id/recordings", async (req, res) => {
+  try {
+    res.json(await getArtistRecordings(req.params.id));
+  } catch (error) {
+    console.error(`[GET /api/artists/${req.params.id}/recordings] failed:`, error);
+    res.status(500).json({ message: (error as Error).message });
+  }
+});
+
+app.get("/api/artists/:id/releases", async (req, res) => {
+  try {
+    res.json(await getArtistReleases(req.params.id));
+  } catch (error) {
+    console.error(`[GET /api/artists/${req.params.id}/releases] failed:`, error);
+    res.status(500).json({ message: (error as Error).message });
+  }
+});
+
+app.get("/api/artists/:id/collaborations", async (req, res) => {
+  try {
+    res.json(await getArtistCollaborations(req.params.id));
+  } catch (error) {
+    console.error(`[GET /api/artists/${req.params.id}/collaborations] failed:`, error);
+    res.status(500).json({ message: (error as Error).message });
+  }
+});
+
+app.get("/api/graph/artists/:id", async (req, res) => {
+  try {
+    const graph = await getArtistGraph(req.params.id);
+    if (!graph) {
+      res.status(404).json({ message: "Artist not found" });
+      return;
+    }
+    res.json(graph);
+  } catch (error) {
+    console.error(`[GET /api/graph/artists/${req.params.id}] failed:`, error);
+    res.status(500).json({ message: (error as Error).message });
   }
 });
 

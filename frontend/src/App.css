@@ -1,10 +1,45 @@
-.search-page {
-  max-width: 640px;
-  margin: 0 auto;
-  padding: 2rem 1rem;
+.app {
   font-family: system-ui, sans-serif;
+  color: #1a1a1a;
 }
 
+.app-header {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  padding: 1rem 2rem;
+  border-bottom: 1px solid #e2e2e2;
+}
+
+.brand {
+  font-size: 1.25rem;
+  font-weight: 700;
+  text-decoration: none;
+  color: #1a1a1a;
+}
+
+.main-nav {
+  display: flex;
+  gap: 1.25rem;
+}
+
+.main-nav a {
+  text-decoration: none;
+  color: #555;
+}
+
+.main-nav a.active {
+  color: #1a1a1a;
+  font-weight: 600;
+}
+
+.app-main {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 1.5rem 2rem 4rem;
+}
+
+/* Search */
 .search-form {
   display: flex;
   gap: 0.5rem;
@@ -17,7 +52,8 @@
   font-size: 1rem;
 }
 
-.search-form button {
+.search-form button,
+.result-card button {
   padding: 0.5rem 1rem;
   cursor: pointer;
 }
@@ -44,12 +80,119 @@
   border-radius: 8px;
 }
 
-.result-card button {
+.result-actions {
   white-space: nowrap;
-  cursor: pointer;
 }
 
 .mbid {
   font-size: 0.75rem;
   color: #888;
+}
+
+/* Tables */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.data-table th,
+.data-table td {
+  text-align: left;
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid #eee;
+}
+
+.data-table th {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: #777;
+}
+
+.data-table a {
+  color: #2563eb;
+  text-decoration: none;
+}
+
+/* Artist detail */
+.artist-meta {
+  color: #666;
+  margin-top: -0.5rem;
+}
+
+.stat-cards {
+  display: flex;
+  gap: 1rem;
+  margin: 1rem 0 1.5rem;
+}
+
+.stat-card {
+  padding: 0.75rem 1.25rem;
+  border: 1px solid #e2e2e2;
+  border-radius: 8px;
+  color: #555;
+}
+
+.stat-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  display: block;
+}
+
+.tabs {
+  display: flex;
+  gap: 0.25rem;
+  border-bottom: 1px solid #e2e2e2;
+  margin-bottom: 1rem;
+}
+
+.tabs button {
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  color: #666;
+}
+
+.tabs button.active {
+  color: #1a1a1a;
+  border-bottom-color: #2563eb;
+  font-weight: 600;
+}
+
+/* Ego graph */
+.ego-graph {
+  width: 100%;
+  max-width: 480px;
+  height: auto;
+}
+
+.ego-edge {
+  stroke: #cbd5e1;
+  stroke-width: 1;
+}
+
+.ego-node circle {
+  fill: #93c5fd;
+  stroke: #2563eb;
+  stroke-width: 1.5;
+  cursor: pointer;
+}
+
+.ego-node.center circle {
+  fill: #2563eb;
+  cursor: default;
+}
+
+.ego-node text {
+  font-size: 11px;
+  fill: #1a1a1a;
+  pointer-events: none;
+}
+
+.ego-node.center text {
+  fill: #fff;
+  font-weight: 700;
 }
