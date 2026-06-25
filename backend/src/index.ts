@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import { getDriver, closeDriver } from "./neo4j.js";
-import { searchArtists, lookupArtist, fetchRecordingsForArtist } from "./musicbrainz.js";
+import { searchArtists, lookupArtist, fetchReleasesForArtist } from "./musicbrainz.js";
 import { upsertArtist } from "./artists.js";
 import { importRecordingsForArtist } from "./recordings.js";
 
@@ -63,9 +63,9 @@ app.post("/api/import/recordings", async (req, res) => {
     return;
   }
   try {
-    const recordings = await fetchRecordingsForArtist(mbid);
-    await importRecordingsForArtist(mbid, recordings);
-    res.status(201).json({ status: "imported", mbid, count: recordings.length });
+    const releases = await fetchReleasesForArtist(mbid);
+    const { recordings } = await importRecordingsForArtist(mbid, releases);
+    res.status(201).json({ status: "imported", mbid, releases: releases.length, recordings });
   } catch (error) {
     res.status(502).json({ message: (error as Error).message });
   }
