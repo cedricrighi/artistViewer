@@ -9,7 +9,10 @@ export function getDriver(): Driver {
       neo4j.auth.basic(
         process.env.NEO4J_USER ?? "neo4j",
         process.env.NEO4J_PASSWORD ?? "changeme"
-      )
+      ),
+      // Return integers as plain JS numbers (track lengths, counts) instead of
+      // neo4j Integer objects, which keeps the read queries' JSON clean.
+      { disableLosslessIntegers: true }
     );
   }
   return driver;

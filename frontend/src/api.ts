@@ -1,5 +1,27 @@
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:4000";
 
+async function getJson<T>(path: string): Promise<T> {
+  const res = await fetch(`${API_BASE_URL}${path}`);
+  if (!res.ok) {
+    throw new Error(`Requête échouée (${res.status})`);
+  }
+  return res.json();
+}
+
+async function postJson<T>(path: string, body: unknown): Promise<T> {
+  const res = await fetch(`${API_BASE_URL}${path}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) {
+    throw new Error(`Requête échouée (${res.status})`);
+  }
+  return res.json();
+}
+
+// --- Search & import (MusicBrainz) ---
+
 export interface ArtistSearchResult {
   id: string;
   name: string;
@@ -9,33 +31,93 @@ export interface ArtistSearchResult {
   "life-span"?: { begin?: string; end?: string };
 }
 
-export async function searchArtists(query: string): Promise<ArtistSearchResult[]> {
-  const res = await fetch(`${API_BASE_URL}/api/search/artists?q=${encodeURIComponent(query)}`);
-  if (!res.ok) {
-    throw new Error(`Recherche échouée (${res.status})`);
-  }
-  return res.json();
+export function searchArtists(query: string): Promise<ArtistSearchResult[]> {
+  return getJson(`/api/search/artists?q=${encodeURIComponent(query)}`);
 }
 
-export async function importArtist(mbid: string): Promise<void> {
-  const res = await fetch(`${API_BASE_URL}/api/import/artists`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ mbid }),
-  });
-  if (!res.ok) {
-    throw new Error(`Import artiste échoué (${res.status})`);
-  }
+export function importArtist(mbid: string): Promise<{ status: string; mbid: string }> {
+  return postJson(`/api/import/artists`, { mbid });
 }
 
-export async function importRecordings(mbid: string): Promise<{ count: number }> {
-  const res = await fetch(`${API_BASE_URL}/api/import/recordings`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ mbid }),
-  });
-  if (!res.ok) {
-    throw new Error(`Import morceaux échoué (${res.status})`);
-  }
-  return res.json();
+export function importRecordings(
+  mbid: string
+): Promise<{ status: string; mbid: string; releases: number; recordings: number }> {
+  return postJson(`/api/import/recordings`, { mbid });
+}
+
+// --- Read (Neo4j) ---
+
+export interface ArtistListItem {
+  mbid: string;
+  name: string;
+  country: string | null;
+  type: string | null;
+  recordingCount: number;
+  collaboratorCount: number;
+}
+
+export interface ArtistDetail {
+  mbid: string;
+  name: string;
+  country?: string | null;
+  type?: string | null;
+  disambiguation?: string | null;
+  beginDate?: string | null;
+  endDate?: string | null;
+  recordingCount: number;
+  collaboratorCount: number;
+  releaseCount: number;
+}
+
+export interface Recording {
+  mbid: string;
+  title: string;
+  length?: number | null;
+  firstReleaseDate?: string | null;
+}
+
+export interface Release {
+  mbid: string;
+  title: string;
+  date?: string | null;
+  country?: string | null;
+  status?: string | null;
+  releaseType?: string | null;
+}
+
+export interface Collaboration {
+  mbid: string;
+  name: string;
+  country: string | null;
+  type: string | null;
+  sharedRecordings: number;
+}
+
+export interface ArtistGraph {
+  nodes: { id: string; label: string | null; center: boolean }[];
+  edges: { source: string; target: string }[];
+}
+
+export function getArtists(): Promise<ArtistListItem[]> {
+  return getJson(`/api/artists`);
+}
+
+export function getArtist(mbid: string): Promise<ArtistDetail> {
+  return getJson(`/api/artists/${mbid}`);
+}
+
+export function getArtistRecordings(mbid: string): Promise<Recording[]> {
+  return getJson(`/api/artists/${mbid}/recordings`);
+}
+
+export function getArtistReleases(mbid: string): Promise<Release[]> {
+  return getJson(`/api/artists/${mbid}/releases`);
+}
+
+export function getArtistCollaborations(mbid: string): Promise<Collaboration[]> {
+  return getJson(`/api/artists/${mbid}/collaborations`);
+}
+
+export function getArtistGraph(mbid: string): Promise<ArtistGraph> {
+  return getJson(`/api/graph/artists/${mbid}`);
 }
