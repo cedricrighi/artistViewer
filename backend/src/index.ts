@@ -37,6 +37,7 @@ app.get("/api/search/artists", async (req, res) => {
     const artists = await searchArtists(query);
     res.json(artists);
   } catch (error) {
+    console.error("[GET /api/search/artists] failed:", error);
     res.status(502).json({ message: (error as Error).message });
   }
 });
@@ -52,6 +53,7 @@ app.post("/api/import/artists", async (req, res) => {
     await upsertArtist(artist);
     res.status(201).json({ status: "imported", mbid: artist.id });
   } catch (error) {
+    console.error(`[POST /api/import/artists] failed for mbid=${mbid}:`, error);
     res.status(502).json({ message: (error as Error).message });
   }
 });
@@ -67,6 +69,7 @@ app.post("/api/import/recordings", async (req, res) => {
     await importRecordingsForArtist(mbid, recordings);
     res.status(201).json({ status: "imported", mbid, count: recordings.length });
   } catch (error) {
+    console.error(`[POST /api/import/recordings] failed for mbid=${mbid}:`, error);
     res.status(502).json({ message: (error as Error).message });
   }
 });
