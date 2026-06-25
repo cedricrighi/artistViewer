@@ -62,3 +62,48 @@ export async function lookupArtist(mbid: string): Promise<MusicBrainzArtist> {
     return (await res.json()) as MusicBrainzArtist;
   });
 }
+
+export interface MusicBrainzArtistCredit {
+  name: string;
+  joinphrase?: string;
+  artist: { id: string; name: string };
+}
+
+export interface MusicBrainzRelease {
+  id: string;
+  title: string;
+  date?: string;
+  country?: string;
+  status?: string;
+  "release-group"?: { "primary-type"?: string };
+}
+
+export interface MusicBrainzRecording {
+  id: string;
+  title: string;
+  length?: number;
+  "first-release-date"?: string;
+  "artist-credit"?: MusicBrainzArtistCredit[];
+  releases?: MusicBrainzRelease[];
+}
+
+interface BrowseRecordingsResponse {
+  recordings: MusicBrainzRecording[];
+}
+
+export async function fetchRecordingsForArtist(
+  artistMbid: string,
+  limit = 25
+): Promise<MusicBrainzRecording[]> {
+  return throttled(async () => {
+    const url = `${getBaseUrl()}/recording?artist=${artistMbid}&inc=releases+artist-credits&limit=${limit}&fmt=json`;
+    const res = await fetch(url, {
+      headers: { "User-Agent": getUserAgent() },
+    });
+    if (!res.ok) {
+      throw new Error(`MusicBrainz recordings fetch failed: ${res.status} ${res.statusText}`);
+    }
+    const data = (await res.json()) as BrowseRecordingsResponse;
+    return data.recordings ?? [];
+  });
+}
