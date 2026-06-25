@@ -54,18 +54,25 @@ export default function ArtistDetailPage() {
   }, [id]);
 
   if (error) return <p className="error">{error}</p>;
-  if (!artist) return <p>Chargement...</p>;
+  if (!artist) return <p className="skeleton-text">Chargement...</p>;
 
   return (
     <section>
-      <p>
-        <Link to="/artists">← Tous les artistes</Link>
-      </p>
+      <Link to="/artists" className="back-link">
+        ← Tous les artistes
+      </Link>
       <h1>{artist.name}</h1>
-      <p className="artist-meta">
-        {[artist.type, artist.country, artist.disambiguation].filter(Boolean).join(" · ")}
-        {artist.beginDate && ` · ${artist.beginDate}${artist.endDate ? `–${artist.endDate}` : ""}`}
-      </p>
+      <div className="artist-meta">
+        {artist.type && <span className="badge">{artist.type}</span>}
+        {artist.country && <span className="badge">{artist.country}</span>}
+        {(artist.beginDate || artist.endDate) && (
+          <span className="badge">
+            {artist.beginDate ?? "?"}
+            {artist.endDate ? `–${artist.endDate}` : ""}
+          </span>
+        )}
+        {artist.disambiguation && <span>{artist.disambiguation}</span>}
+      </div>
       <div className="stat-cards">
         <div className="stat-card">
           <span className="stat-value">{artist.recordingCount}</span> morceaux
@@ -89,74 +96,97 @@ export default function ArtistDetailPage() {
         ))}
       </nav>
 
-      {tab === "recordings" && (
-        <table className="data-table">
-          <thead>
-            <tr>
-              <th>Titre</th>
-              <th>Durée</th>
-              <th>1ère sortie</th>
-            </tr>
-          </thead>
-          <tbody>
-            {recordings.map((r) => (
-              <tr key={r.mbid}>
-                <td>{r.title}</td>
-                <td>{formatLength(r.length)}</td>
-                <td>{r.firstReleaseDate ?? "—"}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
+      {tab === "recordings" &&
+        (recordings.length === 0 ? (
+          <div className="empty-state">Aucun morceau.</div>
+        ) : (
+          <div className="card">
+            <table className="data-table">
+              <thead>
+                <tr>
+                  <th>Titre</th>
+                  <th>Durée</th>
+                  <th>1ère sortie</th>
+                </tr>
+              </thead>
+              <tbody>
+                {recordings.map((r) => (
+                  <tr key={r.mbid}>
+                    <td>{r.title}</td>
+                    <td className="num">{formatLength(r.length)}</td>
+                    <td className="num">{r.firstReleaseDate ?? "—"}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ))}
 
-      {tab === "releases" && (
-        <table className="data-table">
-          <thead>
-            <tr>
-              <th>Titre</th>
-              <th>Type</th>
-              <th>Date</th>
-              <th>Pays</th>
-              <th>Statut</th>
-            </tr>
-          </thead>
-          <tbody>
-            {releases.map((r) => (
-              <tr key={r.mbid}>
-                <td>{r.title}</td>
-                <td>{r.releaseType ?? "—"}</td>
-                <td>{r.date ?? "—"}</td>
-                <td>{r.country ?? "—"}</td>
-                <td>{r.status ?? "—"}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
+      {tab === "releases" &&
+        (releases.length === 0 ? (
+          <div className="empty-state">Aucun album.</div>
+        ) : (
+          <div className="card">
+            <table className="data-table">
+              <thead>
+                <tr>
+                  <th>Titre</th>
+                  <th>Type</th>
+                  <th>Date</th>
+                  <th>Pays</th>
+                  <th>Statut</th>
+                </tr>
+              </thead>
+              <tbody>
+                {releases.map((r) => (
+                  <tr key={r.mbid}>
+                    <td>{r.title}</td>
+                    <td>{r.releaseType ?? "—"}</td>
+                    <td className="num">{r.date ?? "—"}</td>
+                    <td>{r.country ?? "—"}</td>
+                    <td>{r.status ?? "—"}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ))}
 
-      {tab === "collaborations" && (
-        <table className="data-table">
-          <thead>
-            <tr>
-              <th>Artiste</th>
-              <th>Morceaux en commun</th>
-            </tr>
-          </thead>
-          <tbody>
-            {collaborations.map((c) => (
-              <tr key={c.mbid}>
-                <td>
-                  <Link to={`/artists/${c.mbid}`}>{c.name}</Link>
-                </td>
-                <td>{c.sharedRecordings}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
+      {tab === "collaborations" &&
+        (collaborations.length === 0 ? (
+          <div className="empty-state">Aucune collaboration détectée.</div>
+        ) : (
+          <div className="card">
+            <table className="data-table">
+              <thead>
+                <tr>
+                  <th>Artiste</th>
+                  <th>Morceaux en commun</th>
+                </tr>
+              </thead>
+              <tbody>
+                {collaborations.map((c) => (
+                  <tr key={c.mbid}>
+                    <td>
+                      <Link to={`/artists/${c.mbid}`}>{c.name}</Link>
+                    </td>
+                    <td className="num">{c.sharedRecordings}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ))}
 
-      {tab === "graph" && graph && <EgoGraph graph={graph} />}
+      {tab === "graph" &&
+        graph &&
+        (graph.edges.length === 0 ? (
+          <div className="empty-state">Aucune collaboration à visualiser.</div>
+        ) : (
+          <div className="graph-wrap">
+            <EgoGraph graph={graph} />
+          </div>
+        ))}
     </section>
   );
 }
