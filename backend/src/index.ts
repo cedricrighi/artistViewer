@@ -2,8 +2,9 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import { getDriver, closeDriver } from "./neo4j.js";
-import { searchArtists, lookupArtist } from "./musicbrainz.js";
+import { searchArtists, lookupArtist, fetchRecordingsForArtist } from "./musicbrainz.js";
 import { upsertArtist } from "./artists.js";
+import { importRecordingsForArtist } from "./recordings.js";
 
 dotenv.config();
 
@@ -50,6 +51,21 @@ app.post("/api/import/artists", async (req, res) => {
     const artist = await lookupArtist(mbid);
     await upsertArtist(artist);
     res.status(201).json({ status: "imported", mbid: artist.id });
+  } catch (error) {
+    res.status(502).json({ message: (error as Error).message });
+  }
+});
+
+app.post("/api/import/recordings", async (req, res) => {
+  const mbid = req.body?.mbid;
+  if (typeof mbid !== "string" || mbid.trim() === "") {
+    res.status(400).json({ message: "Body field 'mbid' is required" });
+    return;
+  }
+  try {
+    const recordings = await fetchRecordingsForArtist(mbid);
+    await importRecordingsForArtist(mbid, recordings);
+    res.status(201).json({ status: "imported", mbid, count: recordings.length });
   } catch (error) {
     res.status(502).json({ message: (error as Error).message });
   }
