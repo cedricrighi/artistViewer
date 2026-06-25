@@ -1,7 +1,9 @@
-import { NavLink, Navigate, Route, Routes } from "react-router-dom";
+import { NavLink, Route, Routes } from "react-router-dom";
+import HomePage from "./pages/HomePage";
 import SearchPage from "./pages/SearchPage";
 import ArtistsPage from "./pages/ArtistsPage";
 import ArtistDetailPage from "./pages/ArtistDetailPage";
+import StatsPage from "./pages/StatsPage";
 import "./App.css";
 
 export default function App() {
@@ -20,15 +22,17 @@ export default function App() {
         <nav className="main-nav">
           <NavLink to="/search">Recherche</NavLink>
           <NavLink to="/artists">Artistes</NavLink>
+          <NavLink to="/stats">Statistiques</NavLink>
         </nav>
       </header>
 
       <main className="app-main">
         <Routes>
-          <Route path="/" element={<Navigate to="/artists" replace />} />
+          <Route path="/" element={<HomePage />} />
           <Route path="/search" element={<SearchPage />} />
           <Route path="/artists" element={<ArtistsPage />} />
           <Route path="/artists/:id" element={<ArtistDetailPage />} />
+          <Route path="/stats" element={<StatsPage />} />
           <Route path="*" element={<p>Page introuvable.</p>} />
         </Routes>
       </main>

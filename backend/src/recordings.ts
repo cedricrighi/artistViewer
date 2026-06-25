@@ -13,6 +13,7 @@ interface RecordingParam {
     country: string | null;
     status: string | null;
     releaseType: string | null;
+    labels: { mbid: string; name: string }[];
   }[];
   collaborators: { id: string; name: string }[];
 }
@@ -30,6 +31,10 @@ function flattenReleases(releases: MusicBrainzRelease[], artistMbid: string): Re
       country: release.country ?? null,
       status: release.status ?? null,
       releaseType: release["release-group"]?.["primary-type"] ?? null,
+      labels: (release["label-info"] ?? [])
+        .map((info) => info.label)
+        .filter((label): label is { id: string; name: string } => Boolean(label?.id))
+        .map((label) => ({ mbid: label.id, name: label.name })),
     };
     for (const medium of release.media ?? []) {
       for (const track of medium.tracks ?? []) {
@@ -79,6 +84,14 @@ export async function importRecordingsForArtist(
              release.status = rel.status,
              release.releaseType = rel.releaseType
          MERGE (recording)-[:APPEARS_ON]->(release)
+         WITH release, rel
+         CALL {
+           WITH release, rel
+           UNWIND rel.labels AS lab
+           MERGE (label:Label {mbid: lab.mbid})
+           SET label.name = lab.name
+           MERGE (release)-[:RELEASED_BY]->(label)
+         }
        }
        WITH artist, recording, rec
        CALL {

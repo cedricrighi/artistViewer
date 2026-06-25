@@ -121,3 +121,54 @@ export function getArtistCollaborations(mbid: string): Promise<Collaboration[]> 
 export function getArtistGraph(mbid: string): Promise<ArtistGraph> {
   return getJson(`/api/graph/artists/${mbid}`);
 }
+
+// --- Stats ---
+
+export interface StatsOverview {
+  artists: number;
+  recordings: number;
+  releases: number;
+  genres: number;
+  labels: number;
+  collaborations: number;
+}
+
+export interface TopArtist {
+  mbid: string;
+  name: string;
+  collaborators: number;
+  recordings: number;
+}
+
+export interface TopCollaboration {
+  mbidA: string;
+  artistA: string;
+  mbidB: string;
+  artistB: string;
+  sharedRecordings: number;
+}
+
+export interface TopGenre {
+  genre: string;
+  artists: number;
+}
+
+export function getStatsOverview(): Promise<StatsOverview> {
+  return getJson(`/api/stats/overview`);
+}
+
+export function getTopArtists(limit = 10): Promise<TopArtist[]> {
+  return getJson(`/api/stats/top-artists?limit=${limit}`);
+}
+
+export function getTopCollaborations(limit = 10): Promise<TopCollaboration[]> {
+  return getJson(`/api/stats/top-collaborations?limit=${limit}`);
+}
+
+export function getTopGenres(limit = 10): Promise<TopGenre[]> {
+  return getJson(`/api/stats/top-genres?limit=${limit}`);
+}
+
+export function getFullGraph(limit = 200): Promise<ArtistGraph> {
+  return getJson(`/api/graph?limit=${limit}`);
+}
