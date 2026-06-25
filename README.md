@@ -15,10 +15,14 @@ Le sujet complet du projet (contexte, fonctionnalités attendues, modèle de don
 
 ## État actuel
 
-- Squelette backend (Express + TS) avec endpoints `/api/health` et `/api/health/neo4j`
-- Squelette frontend (Vite + React + TS)
+- **Backend** (Express + TS) :
+  - Santé : `GET /api/health`, `GET /api/health/neo4j`
+  - MusicBrainz : `GET /api/search/artists`, `POST /api/import/artists`, `POST /api/import/recordings` (client avec rate-limit 1 req/s + retry/backoff sur erreurs transitoires)
+  - Lecture Neo4j : `GET /api/artists`, `/api/artists/:id`, `/api/artists/:id/recordings`, `/api/artists/:id/releases`, `/api/artists/:id/collaborations`, `/api/graph/artists/:id`
+- **Frontend** (Vite + React + TS, react-router) : page de recherche/import, liste des artistes importés, fiche détail (onglets morceaux / albums / collaborations / graphe)
+- **Modèle Neo4j** : nœuds `Artist`, `Recording`, `Release` ; relations `PERFORMED`, `APPEARS_ON`, `FEATURED_ON`, `COLLABORATED_WITH`
 - Docker Compose avec les 3 services en place
-- À venir : intégration MusicBrainz, modèle de données Neo4j, interface de visualisation
+- À venir : pages statistiques (`/api/stats/*`), genres/labels/areas, endpoints recordings/releases globaux
 
 ## Lancer le projet
 
