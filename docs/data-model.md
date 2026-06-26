@@ -87,6 +87,7 @@ l'artiste importé (pour garder `PERFORMED` exact).
 | GET | `/api/recordings` · `/api/recordings/:id` | morceaux |
 | GET | `/api/releases` · `/api/releases/:id` | releases |
 | GET | `/api/graph` · `/api/graph/collaborations` · `/api/graph/artists/:id` | graphes |
+| GET | `/api/graph/path?from=&to=` | plus court chemin de collaboration entre deux artistes |
 | GET | `/api/stats/overview` · `top-artists` · `top-collaborations` · `top-genres` · `top-recordings` | analyses |
 
 ## Choix techniques
@@ -95,8 +96,12 @@ l'artiste importé (pour garder `PERFORMED` exact).
   entre artistes) sont naturelles en graphe et coûteuses en relationnel.
 - **Node/TypeScript de bout en bout** : un seul langage backend + frontend.
 - **react-router** : navigation multi-pages (accueil, recherche, artistes,
-  fiche, stats).
-- **Visualisation** : graphe ego en SVG (léger, sans dépendance lourde).
+  fiche, morceaux, graphe, stats).
+- **Visualisation** : **Cytoscape.js** (zoom / pan / drag), chargé en lazy pour
+  ne pas alourdir le bundle initial — layout concentrique pour l'ego-graph d'un
+  artiste, layout force (`cose`) pour le graphe global.
+- **Plus court chemin** : `shortestPath` Cypher sur les relations
+  `COLLABORATED_WITH` (max 8 sauts) pour relier deux artistes.
 - **Docker Compose** : `neo4j`, `backend`, `frontend` orchestrés ensemble.
 
 ## Limites connues

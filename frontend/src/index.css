@@ -27,6 +27,16 @@
   --danger: #dc2626;
   --danger-soft: #fef2f2;
 
+  /* Text on accent-colored surfaces (buttons, badges) */
+  --on-accent: #ffffff;
+
+  /* Header & graph (theme-driven so Cytoscape matches the UI) */
+  --header-bg: rgba(255, 255, 255, 0.85);
+  --graph-node: #a78bfa;
+  --graph-edge: #d7d7e0;
+  --graph-label: #27272a;
+  --graph-label-bg: #ffffff;
+
   /* Radii & shadows */
   --radius-sm: 8px;
   --radius: 12px;
@@ -37,6 +47,7 @@
   --font: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
 
+  color-scheme: light;
   font-family: var(--font);
   font-size: 16px;
   line-height: 1.55;
@@ -45,6 +56,42 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+}
+
+:root[data-theme="dark"] {
+  --bg: #0f0f15;
+  --surface: #1a1a23;
+  --surface-muted: #23232f;
+
+  --text: #c5c5d2;
+  --text-strong: #f3f3f7;
+  --text-muted: #8a8a99;
+
+  --border: #2a2a37;
+  --border-strong: #3a3a4a;
+
+  --accent: #a78bfa;
+  --accent-hover: #c4b5fd;
+  --accent-soft: #241f3a;
+  --accent-ring: rgba(167, 139, 250, 0.3);
+
+  --success: #34d399;
+  --success-soft: #0c2a20;
+  --danger: #f87171;
+  --danger-soft: #2c1417;
+
+  --on-accent: #14141a;
+
+  --header-bg: rgba(26, 26, 35, 0.8);
+  --graph-node: #8b5cf6;
+  --graph-edge: #3a3a4a;
+  --graph-label: #e2e2ea;
+  --graph-label-bg: #1a1a23;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3), 0 1px 3px rgba(0, 0, 0, 0.35);
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.4), 0 2px 4px rgba(0, 0, 0, 0.3);
+
+  color-scheme: dark;
 }
 
 *,

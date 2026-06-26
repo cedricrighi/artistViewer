@@ -24,6 +24,9 @@ export default function HomePage() {
           <Link to="/artists" className="btn btn-ghost">
             Voir les artistes
           </Link>
+          <Link to="/graph" className="btn btn-ghost">
+            Explorer le graphe
+          </Link>
           <Link to="/stats" className="btn btn-ghost">
             Statistiques
           </Link>

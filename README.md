@@ -9,7 +9,7 @@ Le sujet complet du projet (contexte, fonctionnalités attendues, modèle de don
 - **Backend** : Node.js + Express + TypeScript (`backend/`), driver `neo4j-driver` pour Neo4j
 - **Frontend** : React + TypeScript via Vite (`frontend/`)
 - **Base de données** : Neo4j (Community Edition, via Docker)
-- **Visualisation de graphe** : Cytoscape.js (à intégrer côté frontend)
+- **Visualisation de graphe** : Cytoscape.js (intégré côté frontend, chargé à la demande)
 - **Récupération MusicBrainz** : appels HTTP directs (fetch/axios) avec respect du rate-limit (1 req/s)
 - **Infra** : Docker Compose (`neo4j`, `backend`, `frontend`)
 
@@ -20,9 +20,13 @@ Le sujet complet du projet (contexte, fonctionnalités attendues, modèle de don
   - MusicBrainz : `GET /api/search/artists`, `POST /api/import/artists`, `POST /api/import/recordings` (client avec rate-limit 1 req/s + retry/backoff sur erreurs transitoires)
   - Artistes : `GET /api/artists`, `/api/artists/:id`, `.../recordings`, `.../releases`, `.../collaborations`
   - Morceaux & releases : `GET /api/recordings`, `/api/recordings/:id`, `/api/releases`, `/api/releases/:id`
-  - Graphes : `GET /api/graph`, `/api/graph/collaborations`, `/api/graph/artists/:id`
+  - Graphes : `GET /api/graph`, `/api/graph/collaborations`, `/api/graph/artists/:id`, `/api/graph/path?from=&to=` (plus court chemin)
   - Stats : `GET /api/stats/overview`, `top-artists`, `top-collaborations`, `top-genres`, `top-recordings`
-- **Frontend** (Vite + React + TS, react-router) : accueil, recherche/import, liste des artistes, fiche détail (onglets morceaux / albums / collaborations / graphe), page statistiques
+- **Frontend** (Vite + React + TS, react-router) :
+  - pages : accueil, recherche/import, liste des artistes (filtrable), fiche détail (onglets morceaux / albums avec pochettes / collaborations / graphe), **morceaux** (filtre + tri), **graphe global** (Cytoscape) avec recherche du **plus court chemin** entre deux artistes, statistiques
+  - robustesse : chargement et gestion d'erreur **par section** (une requête en échec ne casse plus toute la page), messages d'erreur lisibles + bouton « Réessayer », détection « serveur injoignable »
+  - pochettes d'albums via **Cover Art Archive** (avec fallback)
+  - **thème clair / sombre** (toggle persistant, préférence système respectée, sans flash au chargement) — le graphe Cytoscape s'adapte aussi
 - **Modèle Neo4j** : nœuds `Artist`, `Recording`, `Release`, `Label`, `Genre`, `Area` ; relations `PERFORMED`, `FEATURED_ON`, `COLLABORATED_WITH`, `APPEARS_ON`, `RELEASED_BY`, `ASSOCIATED_WITH_GENRE`, `FROM_AREA` (voir [docs/data-model.md](./docs/data-model.md))
 - **Données** : export du graphe dans [data/dataset.json](./data/dataset.json) (`npm run export:data`)
 - Docker Compose avec les 3 services en place

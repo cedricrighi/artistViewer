@@ -18,6 +18,7 @@ import {
   getRelease,
   getFullGraph,
   getCollaborationsGraph,
+  getShortestPath,
   statsOverview,
   topArtists,
   topCollaborations,
@@ -222,6 +223,21 @@ app.get("/api/graph/collaborations", async (req, res) => {
     res.json(await getCollaborationsGraph(parseLimit(req, 150)));
   } catch (error) {
     console.error("[GET /api/graph/collaborations] failed:", error);
+    res.status(500).json({ message: (error as Error).message });
+  }
+});
+
+app.get("/api/graph/path", async (req, res) => {
+  const { from, to } = req.query;
+  if (typeof from !== "string" || typeof to !== "string" || !from.trim() || !to.trim()) {
+    res.status(400).json({ message: "Query parameters 'from' and 'to' are required" });
+    return;
+  }
+  try {
+    const hops = await getShortestPath(from, to);
+    res.json({ found: hops !== null, hops: hops ?? [] });
+  } catch (error) {
+    console.error(`[GET /api/graph/path] failed for ${from} -> ${to}:`, error);
     res.status(500).json({ message: (error as Error).message });
   }
 });

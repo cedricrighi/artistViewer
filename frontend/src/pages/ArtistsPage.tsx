@@ -1,21 +1,22 @@
-import { useEffect, useState } from "react";
+import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { getArtists, type ArtistListItem } from "../api";
+import { getArtists } from "../api";
+import { useResource } from "../hooks/useResource";
+import { Loading, ErrorState, EmptyState } from "../components/States";
 
 export default function ArtistsPage() {
-  const [artists, setArtists] = useState<ArtistListItem[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { data, error, loading, reload } = useResource(() => getArtists(), []);
+  const [filter, setFilter] = useState("");
 
-  useEffect(() => {
-    getArtists()
-      .then(setArtists)
-      .catch((err) => setError((err as Error).message))
-      .finally(() => setLoading(false));
-  }, []);
+  const artists = data ?? [];
+  const filtered = useMemo(() => {
+    const list = data ?? [];
+    const q = filter.trim().toLowerCase();
+    return q ? list.filter((a) => a.name.toLowerCase().includes(q)) : list;
+  }, [data, filter]);
 
-  if (loading) return <p className="skeleton-text">Chargement...</p>;
-  if (error) return <p className="error">{error}</p>;
+  if (loading) return <Loading />;
+  if (error) return <ErrorState message={error} onRetry={reload} />;
 
   return (
     <section>
@@ -23,35 +24,50 @@ export default function ArtistsPage() {
       <p className="lead">
         {artists.length} artiste{artists.length > 1 ? "s" : ""} dans le graphe.
       </p>
+
       {artists.length === 0 ? (
-        <div className="empty-state">
+        <EmptyState>
           Aucun artiste importé. <Link to="/search">Lancer une recherche</Link>.
-        </div>
+        </EmptyState>
       ) : (
-        <div className="card">
-          <table className="data-table">
-            <thead>
-              <tr>
-                <th>Artiste</th>
-                <th>Pays</th>
-                <th>Morceaux</th>
-                <th>Collaborateurs</th>
-              </tr>
-            </thead>
-            <tbody>
-              {artists.map((a) => (
-                <tr key={a.mbid}>
-                  <td>
-                    <Link to={`/artists/${a.mbid}`}>{a.name}</Link>
-                  </td>
-                  <td>{a.country ? <span className="badge">{a.country}</span> : "—"}</td>
-                  <td className="num">{a.recordingCount}</td>
-                  <td className="num">{a.collaboratorCount}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <>
+          <input
+            type="search"
+            className="filter-input"
+            placeholder="Filtrer par nom…"
+            value={filter}
+            onChange={(e) => setFilter(e.target.value)}
+            aria-label="Filtrer les artistes"
+          />
+          {filtered.length === 0 ? (
+            <EmptyState>Aucun artiste ne correspond à « {filter} ».</EmptyState>
+          ) : (
+            <div className="card table-scroll">
+              <table className="data-table">
+                <thead>
+                  <tr>
+                    <th>Artiste</th>
+                    <th>Pays</th>
+                    <th>Morceaux</th>
+                    <th>Collaborateurs</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filtered.map((a) => (
+                    <tr key={a.mbid}>
+                      <td>
+                        <Link to={`/artists/${a.mbid}`}>{a.name}</Link>
+                      </td>
+                      <td>{a.country ? <span className="badge">{a.country}</span> : "—"}</td>
+                      <td className="num">{a.recordingCount}</td>
+                      <td className="num">{a.collaboratorCount}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </>
       )}
     </section>
   );

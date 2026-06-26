@@ -11,9 +11,30 @@
   align-items: center;
   gap: 2rem;
   padding: 0.85rem 1.75rem;
-  background: rgba(255, 255, 255, 0.85);
+  background: var(--header-bg);
   backdrop-filter: saturate(180%) blur(12px);
   border-bottom: 1px solid var(--border);
+}
+
+.theme-toggle {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.2rem;
+  height: 2.2rem;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.theme-toggle:hover {
+  background: var(--surface-muted);
+  color: var(--text-strong);
+  border-color: var(--accent);
 }
 
 .brand {
@@ -85,7 +106,7 @@
   border: 1px solid transparent;
   border-radius: var(--radius-sm);
   background: var(--accent);
-  color: #fff;
+  color: var(--on-accent);
   font-size: 0.95rem;
   font-weight: 600;
   cursor: pointer;
@@ -220,6 +241,16 @@
   overflow: hidden;
 }
 
+/* Let wide tables scroll horizontally instead of being clipped on mobile. */
+.table-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.data-table {
+  min-width: 480px;
+}
+
 .data-table {
   width: 100%;
   border-collapse: collapse;
@@ -338,6 +369,10 @@
 
 /* ---------- States ---------- */
 .error {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
   padding: 0.8rem 1rem;
   background: var(--danger-soft);
   border: 1px solid #fca5a5;
@@ -354,60 +389,300 @@
   border-radius: var(--radius);
 }
 
+.loading {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 1.5rem 0;
+  color: var(--text-muted);
+}
+
+.spinner {
+  width: 1.05rem;
+  height: 1.05rem;
+  border: 2px solid var(--border-strong);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.skeleton-block {
+  border-radius: var(--radius);
+  background: linear-gradient(90deg, var(--surface-muted) 25%, var(--border) 37%, var(--surface-muted) 63%);
+  background-size: 400% 100%;
+  animation: shimmer 1.4s ease infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: 0 0;
+  }
+}
+
 .skeleton-text {
   color: var(--text-muted);
 }
 
-/* ---------- Ego graph ---------- */
-.graph-wrap {
+.btn-sm {
+  padding: 0.35rem 0.7rem;
+  font-size: 0.85rem;
+}
+
+.btn-icon {
+  padding: 0.55rem 0.7rem;
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+/* ---------- Filters & toolbars ---------- */
+.filter-input {
+  width: 100%;
+  max-width: 360px;
+  padding: 0.55rem 0.9rem;
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text-strong);
+}
+
+.filter-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-ring);
+}
+
+.toolbar {
   display: flex;
-  justify-content: center;
-  padding: 1.5rem;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.toolbar .filter-input {
+  margin-bottom: 0;
+}
+
+.sort-control {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+select {
+  font-family: inherit;
+  font-size: 0.9rem;
+  padding: 0.45rem 0.7rem;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text-strong);
+  cursor: pointer;
+}
+
+select:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-ring);
+}
+
+/* ---------- Example chips ---------- */
+.example-chips {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1.75rem;
+}
+
+.example-label {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.chip {
+  padding: 0.3rem 0.8rem;
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--text);
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.chip:hover {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.result-note {
+  margin-top: 0.4rem;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.import-msg {
+  margin-top: 0.5rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.success-text {
+  color: var(--success);
+}
+
+.error-text {
+  color: var(--danger);
+}
+
+.feat-badge {
+  margin-left: 0.4rem;
+}
+
+/* ---------- Graph (Cytoscape) ---------- */
+.graph-wrap {
+  padding: 1rem;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   box-shadow: var(--shadow-sm);
 }
 
-.ego-graph {
+.graph-hint {
+  margin: 0 0 0.75rem;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.graph-canvas {
   width: 100%;
-  max-width: 540px;
-  height: auto;
+  background: var(--surface-muted);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
 }
 
-.ego-edge {
-  stroke: var(--border-strong);
-  stroke-width: 1.2;
+/* ---------- Shortest-path finder ---------- */
+.path-finder {
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
 }
 
-.ego-node circle {
-  fill: #c4b5fd;
-  stroke: var(--accent);
-  stroke-width: 1.5;
-  cursor: pointer;
-  transition: fill 0.15s;
+.path-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 0.75rem;
 }
 
-.ego-node:hover circle {
-  fill: var(--accent);
+.path-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-weight: 600;
 }
 
-.ego-node.center circle {
-  fill: var(--accent);
-  cursor: default;
+.path-form select {
+  min-width: 180px;
 }
 
-.ego-node text {
-  font-size: 11px;
-  font-weight: 500;
-  fill: var(--text-strong);
-  pointer-events: none;
+.path-result {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
 }
 
-.ego-node.center text {
-  fill: #fff;
+.path-degrees {
+  display: inline-block;
+  margin-bottom: 0.6rem;
+  font-size: 0.8rem;
   font-weight: 700;
-  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--accent);
+}
+
+.path-chain {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+}
+
+.path-arrow {
+  margin-left: 0.5rem;
+  color: var(--text-muted);
+}
+
+/* ---------- Cover art grid ---------- */
+.cover-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 1rem;
+}
+
+.release-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  transition: box-shadow 0.15s, border-color 0.15s;
+}
+
+.release-card:hover {
+  box-shadow: var(--shadow);
+  border-color: var(--border-strong);
+}
+
+.cover {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  background: var(--surface-muted);
+  display: block;
+}
+
+.cover-fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  color: var(--border-strong);
+  background: var(--surface-muted);
+}
+
+.release-body {
+  padding: 0.75rem 0.85rem;
+}
+
+.release-title {
+  font-weight: 600;
+  color: var(--text-strong);
+  font-size: 0.95rem;
+  margin-bottom: 0.45rem;
+  line-height: 1.3;
 }
 
 /* ---------- Home ---------- */
@@ -465,7 +740,7 @@
   padding: 0 0.35em;
   border-radius: 999px;
   background: var(--accent);
-  color: #fff;
+  color: var(--on-accent);
   font-size: 0.75rem;
   margin-left: 0.4rem;
 }

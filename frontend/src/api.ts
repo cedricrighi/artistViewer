@@ -1,23 +1,53 @@
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:4000";
 
-async function getJson<T>(path: string): Promise<T> {
-  const res = await fetch(`${API_BASE_URL}${path}`);
-  if (!res.ok) {
-    throw new Error(`Requête échouée (${res.status})`);
+/** Cover Art Archive front cover for a release (no API key needed). */
+export function coverArtUrl(releaseMbid: string, size: 250 | 500 = 250): string {
+  return `https://coverartarchive.org/release/${releaseMbid}/front-${size}`;
+}
+
+export class ApiError extends Error {
+  status?: number;
+  constructor(message: string, status?: number) {
+    super(message);
+    this.name = "ApiError";
+    this.status = status;
   }
+}
+
+// Surface the backend's JSON `message` when present, else a readable fallback.
+async function toApiError(res: Response): Promise<ApiError> {
+  let message = `Erreur ${res.status}`;
+  try {
+    const data = await res.json();
+    if (data && typeof data.message === "string") message = data.message;
+  } catch {
+    /* non-JSON error body — keep the status fallback */
+  }
+  return new ApiError(message, res.status);
+}
+
+async function request<T>(path: string, init?: RequestInit): Promise<T> {
+  let res: Response;
+  try {
+    res = await fetch(`${API_BASE_URL}${path}`, init);
+  } catch {
+    // fetch only rejects on network errors (server down, CORS, offline).
+    throw new ApiError("Serveur injoignable — vérifiez que le backend est démarré.");
+  }
+  if (!res.ok) throw await toApiError(res);
   return res.json();
 }
 
-async function postJson<T>(path: string, body: unknown): Promise<T> {
-  const res = await fetch(`${API_BASE_URL}${path}`, {
+function getJson<T>(path: string): Promise<T> {
+  return request<T>(path);
+}
+
+function postJson<T>(path: string, body: unknown): Promise<T> {
+  return request<T>(path, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
   });
-  if (!res.ok) {
-    throw new Error(`Requête échouée (${res.status})`);
-  }
-  return res.json();
 }
 
 // --- Search & import (MusicBrainz) ---
@@ -28,6 +58,7 @@ export interface ArtistSearchResult {
   type?: string;
   country?: string;
   score?: number;
+  disambiguation?: string;
   "life-span"?: { begin?: string; end?: string };
 }
 
@@ -76,6 +107,11 @@ export interface Recording {
   firstReleaseDate?: string | null;
 }
 
+export interface RecordingListItem extends Recording {
+  artists: string[];
+  artistCount: number;
+}
+
 export interface Release {
   mbid: string;
   title: string;
@@ -93,8 +129,14 @@ export interface Collaboration {
   sharedRecordings: number;
 }
 
+export interface GraphNode {
+  id: string;
+  label: string | null;
+  center?: boolean;
+}
+
 export interface ArtistGraph {
-  nodes: { id: string; label: string | null; center: boolean }[];
+  nodes: GraphNode[];
   edges: { source: string; target: string }[];
 }
 
@@ -120,6 +162,23 @@ export function getArtistCollaborations(mbid: string): Promise<Collaboration[]> 
 
 export function getArtistGraph(mbid: string): Promise<ArtistGraph> {
   return getJson(`/api/graph/artists/${mbid}`);
+}
+
+export function getRecordings(limit = 200): Promise<RecordingListItem[]> {
+  return getJson(`/api/recordings?limit=${limit}`);
+}
+
+export function getFullGraph(limit = 200): Promise<ArtistGraph> {
+  return getJson(`/api/graph?limit=${limit}`);
+}
+
+export interface ShortestPath {
+  found: boolean;
+  hops: { mbid: string; name: string }[];
+}
+
+export function getShortestPath(from: string, to: string): Promise<ShortestPath> {
+  return getJson(`/api/graph/path?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}`);
 }
 
 // --- Stats ---
@@ -153,6 +212,12 @@ export interface TopGenre {
   artists: number;
 }
 
+export interface TopRecording {
+  mbid: string;
+  title: string;
+  artistCount: number;
+}
+
 export function getStatsOverview(): Promise<StatsOverview> {
   return getJson(`/api/stats/overview`);
 }
@@ -169,6 +234,6 @@ export function getTopGenres(limit = 10): Promise<TopGenre[]> {
   return getJson(`/api/stats/top-genres?limit=${limit}`);
 }
 
-export function getFullGraph(limit = 200): Promise<ArtistGraph> {
-  return getJson(`/api/graph?limit=${limit}`);
+export function getTopRecordings(limit = 10): Promise<TopRecording[]> {
+  return getJson(`/api/stats/top-recordings?limit=${limit}`);
 }

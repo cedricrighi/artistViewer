@@ -127,7 +127,9 @@ export async function getArtistGraph(mbid: string) {
 export async function listRecordings(limit = 100) {
   return read(
     `MATCH (r:Recording)
-     RETURN r { .* } AS recording
+     OPTIONAL MATCH (a:Artist)-[:PERFORMED|FEATURED_ON]->(r)
+     WITH r, collect(DISTINCT a.name) AS artistNames
+     RETURN r { .*, artists: artistNames, artistCount: size(artistNames) } AS recording
      ORDER BY coalesce(r.firstReleaseDate, ''), r.title
      LIMIT $limit`,
     { limit: neo4jInt(limit) },
@@ -212,6 +214,19 @@ export async function getCollaborationsGraph(limit = 150) {
     return { source: e.source, target: e.target };
   });
   return { nodes: [...nodeMap.values()], edges };
+}
+
+// Shortest collaboration path between two artists (undirected, max 8 hops).
+// Returns the ordered list of artists along the path, or null if unreachable.
+export async function getShortestPath(fromMbid: string, toMbid: string) {
+  const rows = await read(
+    `MATCH (a:Artist {mbid: $from}), (b:Artist {mbid: $to})
+     MATCH p = shortestPath((a)-[:COLLABORATED_WITH*..8]-(b))
+     RETURN [n IN nodes(p) | { mbid: n.mbid, name: n.name }] AS hops`,
+    { from: fromMbid, to: toMbid },
+    (rec) => rec.get("hops") as { mbid: string; name: string }[]
+  );
+  return rows[0] ?? null;
 }
 
 export async function getFullGraph(limit = 200) {
