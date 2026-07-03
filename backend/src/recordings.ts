@@ -14,6 +14,7 @@ interface RecordingParam {
     status: string | null;
     releaseType: string | null;
     labels: { mbid: string; name: string }[];
+    area: { mbid: string; name: string; type: string | null } | null;
   }[];
   collaborators: { id: string; name: string }[];
 }
@@ -24,7 +25,11 @@ interface RecordingParam {
 function flattenReleases(releases: MusicBrainzRelease[], artistMbid: string): RecordingParam[] {
   const params: RecordingParam[] = [];
   for (const release of releases) {
+    const eventArea = (release["release-events"] ?? []).find((e) => e.area?.id)?.area ?? null;
     const releaseInfo = {
+      area: eventArea
+        ? { mbid: eventArea.id, name: eventArea.name, type: eventArea.type ?? null }
+        : null,
       mbid: release.id,
       title: release.title,
       date: release.date ?? null,
@@ -71,7 +76,8 @@ export async function importRecordingsForArtist(
        MERGE (recording:Recording {mbid: rec.mbid})
        SET recording.title = rec.title,
            recording.length = rec.length,
-           recording.firstReleaseDate = rec.firstReleaseDate
+           recording.firstReleaseDate = rec.firstReleaseDate,
+           recording.source = 'musicbrainz'
        MERGE (artist)-[:PERFORMED]->(recording)
        WITH artist, recording, rec
        CALL {
@@ -91,6 +97,14 @@ export async function importRecordingsForArtist(
            MERGE (label:Label {mbid: lab.mbid})
            SET label.name = lab.name
            MERGE (release)-[:RELEASED_BY]->(label)
+         }
+         CALL {
+           WITH release, rel
+           WITH release, rel WHERE rel.area IS NOT NULL
+           MERGE (area:Area {mbid: rel.area.mbid})
+           SET area.name = rel.area.name,
+               area.type = coalesce(rel.area.type, area.type)
+           MERGE (release)-[:RELEASED_IN]->(area)
          }
        }
        WITH artist, recording, rec

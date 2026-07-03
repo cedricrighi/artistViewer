@@ -19,7 +19,8 @@ Le sujet complet du projet (contexte, fonctionnalités attendues, modèle de don
   - Santé : `GET /api/health`, `GET /api/health/neo4j`
   - MusicBrainz : `GET /api/search/artists`, `POST /api/import/artists`, `POST /api/import/recordings` (client avec rate-limit 1 req/s + retry/backoff sur erreurs transitoires)
   - Artistes : `GET /api/artists`, `/api/artists/:id`, `.../recordings`, `.../releases`, `.../collaborations`
-  - Morceaux & releases : `GET /api/recordings`, `/api/recordings/:id`, `/api/releases`, `/api/releases/:id`
+  - Morceaux : `GET /api/recordings`, `/api/recordings/:id`, `.../artists`, `.../releases`
+  - Releases : `GET /api/releases`, `/api/releases/:id`, `.../recordings`, `.../artists`
   - Graphes : `GET /api/graph`, `/api/graph/collaborations`, `/api/graph/artists/:id`, `/api/graph/path?from=&to=` (plus court chemin)
   - Stats : `GET /api/stats/overview`, `top-artists`, `top-collaborations`, `top-genres`, `top-recordings`
 - **Frontend** (Vite + React + TS, react-router) :
@@ -27,13 +28,13 @@ Le sujet complet du projet (contexte, fonctionnalités attendues, modèle de don
   - robustesse : chargement et gestion d'erreur **par section** (une requête en échec ne casse plus toute la page), messages d'erreur lisibles + bouton « Réessayer », détection « serveur injoignable »
   - pochettes d'albums via **Cover Art Archive** (avec fallback)
   - **thème clair / sombre** (toggle persistant, préférence système respectée, sans flash au chargement) — le graphe Cytoscape s'adapte aussi
-- **Modèle Neo4j** : nœuds `Artist`, `Recording`, `Release`, `Label`, `Genre`, `Area` ; relations `PERFORMED`, `FEATURED_ON`, `COLLABORATED_WITH`, `APPEARS_ON`, `RELEASED_BY`, `ASSOCIATED_WITH_GENRE`, `FROM_AREA` (voir [docs/data-model.md](./docs/data-model.md))
-- **Données** : export du graphe dans [data/dataset.json](./data/dataset.json) (`npm run export:data`)
+- **Modèle Neo4j** : nœuds `Artist`, `Recording`, `Release`, `Label`, `Genre`, `Area` ; relations `PERFORMED`, `FEATURED_ON`, `COLLABORATED_WITH`, `APPEARS_ON`, `RELEASED_BY`, `ASSOCIATED_WITH_GENRE`, `FROM_AREA`, `RELEASED_IN` (voir [docs/data-model.md](./docs/data-model.md)) ; contraintes d'unicité sur les MBID créées au démarrage du backend
+- **Données** : export du graphe dans [data/dataset.json](./data/dataset.json) (`npm run export:data`) ; analyse du graphe (réponses à la problématique, chiffres, limites) dans [docs/analysis.md](./docs/analysis.md)
 - Docker Compose avec les 3 services en place
 
 ## Lancer le projet
 
-Depuis la racine du repo (`artistViewer/`, là où se trouve `docker-compose.yaml`) :
+Depuis la racine du repo (`artistViewer/`, là où se trouve `docker-compose.yml`) :
 
 ```bash
 cp .env.example .env
@@ -44,6 +45,24 @@ docker compose --env-file .env up --build
 - Frontend : http://localhost:5173
 - Neo4j Browser : http://localhost:7474
 
+## Réinitialiser les données
+
+Deux options selon ce que l'on veut effacer :
+
+```bash
+# Vider uniquement le graphe (les conteneurs restent en route)
+docker exec musicgraph-neo4j cypher-shell -u "$NEO4J_USER" -p "$NEO4J_PASSWORD" \
+  "MATCH (n) DETACH DELETE n"
+
+# Tout remettre à zéro (supprime le volume Neo4j, mot de passe compris)
+docker compose down -v
+docker compose --env-file .env up --build
+```
+
+La même requête `MATCH (n) DETACH DELETE n` peut aussi être exécutée depuis le
+Neo4j Browser (http://localhost:7474). Les contraintes d'unicité survivent au
+`DETACH DELETE` et sont de toute façon recréées au démarrage du backend.
+
 ## Structure du repo
 
 ```
@@ -51,8 +70,8 @@ artistViewer/
 ├── backend/      # API Express + TS, client MusicBrainz, accès Neo4j
 ├── frontend/     # SPA React + Vite
 ├── data/         # export du dataset (dataset.json) + doc
-├── docs/         # documentation du modèle de données et des choix techniques
-├── docker-compose.yaml
+├── docs/         # modèle de données, choix techniques, analyse du graphe
+├── docker-compose.yml
 ├── .env.example
 ├── sujet.md
 └── README.md

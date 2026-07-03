@@ -1,8 +1,8 @@
 {
-  "exportedAt": "2026-06-25T12:40:59.830Z",
+  "exportedAt": "2026-07-03T07:06:17.198Z",
   "counts": {
-    "nodes": 771,
-    "relationships": 1813
+    "nodes": 774,
+    "relationships": 1860
   },
   "nodes": [
     {
@@ -10,6 +10,13 @@
       "properties": {
         "mbid": "08310658-51eb-3801-80de-5a0739207115",
         "name": "France"
+      }
+    },
+    {
+      "label": "Area",
+      "properties": {
+        "mbid": "525d4e18-3d00-31b9-a58b-a146a916de8f",
+        "name": "[Worldwide]"
       }
     },
     {
@@ -749,11 +756,26 @@
       }
     },
     {
+      "label": "Label",
+      "properties": {
+        "mbid": "6b662c2e-6556-456c-ac61-b8004f571d08",
+        "name": "Liga One Industry"
+      }
+    },
+    {
+      "label": "Label",
+      "properties": {
+        "mbid": "6f9b5cad-6816-488e-bcd8-3530e3794783",
+        "name": "Musicast"
+      }
+    },
+    {
       "label": "Recording",
       "properties": {
         "firstReleaseDate": "2015-01-07",
         "mbid": "035e0797-766d-4711-a1c3-7ef69e260163",
         "length": 251280,
+        "source": "musicbrainz",
         "title": "Y'a beaucoup d'absents"
       }
     },
@@ -763,6 +785,7 @@
         "firstReleaseDate": "2014-04-06",
         "mbid": "06157e4b-c61c-47e6-9b51-3038b02e395f",
         "length": 226772,
+        "source": "musicbrainz",
         "title": "Ça me dégoûte"
       }
     },
@@ -772,6 +795,7 @@
         "firstReleaseDate": "2014-12-14",
         "mbid": "dfc1d6f3-2aee-4dfa-8500-033c7f294875",
         "length": 208587,
+        "source": "musicbrainz",
         "title": "J'suis là"
       }
     },
@@ -781,6 +805,7 @@
         "firstReleaseDate": "2014-02-24",
         "mbid": "547ce8cc-a280-47ec-bb12-f19450f9b338",
         "length": 124914,
+        "source": "musicbrainz",
         "title": "Winners"
       }
     },
@@ -790,6 +815,7 @@
         "firstReleaseDate": "2014-02-24",
         "mbid": "8e893b21-83f9-4a17-87ac-522ec42ac070",
         "length": 213576,
+        "source": "musicbrainz",
         "title": "Malade"
       }
     },
@@ -799,6 +825,7 @@
         "firstReleaseDate": "2014-02-24",
         "mbid": "e180f9fe-2850-40be-b961-cfd92d124df9",
         "length": 209434,
+        "source": "musicbrainz",
         "title": "Dans mon dél"
       }
     },
@@ -808,6 +835,7 @@
         "firstReleaseDate": "2014-02-24",
         "mbid": "252a89ee-3f79-4dfa-b0ae-1f69835e89d7",
         "length": 176622,
+        "source": "musicbrainz",
         "title": "Grillé"
       }
     },
@@ -817,6 +845,7 @@
         "firstReleaseDate": "2014-02-24",
         "mbid": "5324576f-ba4d-4470-be05-eee680237191",
         "length": 316778,
+        "source": "musicbrainz",
         "title": "J’oublie tout"
       }
     },
@@ -826,6 +855,7 @@
         "firstReleaseDate": "2014-02-24",
         "mbid": "0abe867f-f963-4160-96f1-fcc0d30ebe5b",
         "length": 199113,
+        "source": "musicbrainz",
         "title": "Au quartier"
       }
     },
@@ -835,6 +865,7 @@
         "firstReleaseDate": "2014-02-24",
         "mbid": "aa96ba91-9902-4e58-96fe-748aee75c3a8",
         "length": 247258,
+        "source": "musicbrainz",
         "title": "Jeune de cité"
       }
     },
@@ -844,6 +875,7 @@
         "firstReleaseDate": "2013-10-26",
         "mbid": "310b42f5-5983-4731-8d0d-e4e7b4f04f7c",
         "length": 258824,
+        "source": "musicbrainz",
         "title": "Sort le cross volé"
       }
     },
@@ -853,6 +885,7 @@
         "firstReleaseDate": "2014-02-24",
         "mbid": "0ed76489-e459-4e5d-b5e8-57fb13f914cb",
         "length": 251958,
+        "source": "musicbrainz",
         "title": "N’importe quoi"
       }
     },
@@ -862,6 +895,7 @@
         "firstReleaseDate": "2014-01-20",
         "mbid": "c06cf3d2-47fd-4197-b488-0f610b2ffb53",
         "length": 160000,
+        "source": "musicbrainz",
         "title": "Dans ma paranoïa"
       }
     },
@@ -871,6 +905,7 @@
         "firstReleaseDate": "2014-02-24",
         "mbid": "611a137d-2172-4b0e-a9e6-425809e47fdc",
         "length": 212000,
+        "source": "musicbrainz",
         "title": "Tu la love"
       }
     },
@@ -880,6 +915,7 @@
         "firstReleaseDate": "2014-02-24",
         "mbid": "92493662-2eea-455d-8435-42192067205b",
         "length": 216772,
+        "source": "musicbrainz",
         "title": "T’es pas le seul"
       }
     },
@@ -889,6 +925,7 @@
         "firstReleaseDate": "2014-02-24",
         "mbid": "a91c4e3a-cbde-41fc-b06a-5a4abda2206b",
         "length": 163397,
+        "source": "musicbrainz",
         "title": "C’est trop"
       }
     },
@@ -898,6 +935,7 @@
         "firstReleaseDate": "2014-02-24",
         "mbid": "9ead2d03-8fef-438c-a0cf-9d1c636ce976",
         "length": 208287,
+        "source": "musicbrainz",
         "title": "Audi volée"
       }
     },
@@ -907,6 +945,7 @@
         "firstReleaseDate": "2014-02-24",
         "mbid": "118c1246-8b55-45a9-9966-d3640974c565",
         "length": 147638,
+        "source": "musicbrainz",
         "title": "Tout seul"
       }
     },
@@ -916,6 +955,7 @@
         "firstReleaseDate": "2014-02-24",
         "mbid": "23f3df7f-b2aa-4d5e-957a-d0f8637c65ca",
         "length": 283382,
+        "source": "musicbrainz",
         "title": "Le Sang"
       }
     },
@@ -925,6 +965,7 @@
         "firstReleaseDate": "2014-02-24",
         "mbid": "cc9ef82e-c8a4-4372-aad3-251a3ad4d48d",
         "length": 236333,
+        "source": "musicbrainz",
         "title": "Mon son vient d’ailleurs"
       }
     },
@@ -934,6 +975,7 @@
         "firstReleaseDate": "2015-06-08",
         "mbid": "2363d35e-9320-40e8-b773-9b9d248956ed",
         "length": 334000,
+        "source": "musicbrainz",
         "title": "Ça vient de là"
       }
     },
@@ -943,6 +985,7 @@
         "firstReleaseDate": "2015-06-08",
         "mbid": "c48c64bb-b535-4d34-981d-d1ae209491df",
         "length": 221000,
+        "source": "musicbrainz",
         "title": "Dans ma cité"
       }
     },
@@ -952,6 +995,7 @@
         "firstReleaseDate": "2015-04-27",
         "mbid": "d1d084a5-9be1-4910-8dd3-a7b6cecf84b2",
         "length": 295000,
+        "source": "musicbrainz",
         "title": "Je tourne en rond"
       }
     },
@@ -961,6 +1005,7 @@
         "firstReleaseDate": "2015-06-08",
         "mbid": "9eda7334-ca01-4a8f-80aa-b3372900fab9",
         "length": 289000,
+        "source": "musicbrainz",
         "title": "Vis mon malheur"
       }
     },
@@ -970,6 +1015,7 @@
         "firstReleaseDate": "2015-06-08",
         "mbid": "4321e14b-71d0-4b60-9dc5-5deeb0f0be52",
         "length": 168000,
+        "source": "musicbrainz",
         "title": "Gros"
       }
     },
@@ -979,6 +1025,7 @@
         "firstReleaseDate": "2015-06-08",
         "mbid": "c26da3d2-32f9-497e-824a-dda5980dd52f",
         "length": 177000,
+        "source": "musicbrainz",
         "title": "1er dans la bataille"
       }
     },
@@ -988,6 +1035,7 @@
         "firstReleaseDate": "2015-06-08",
         "mbid": "0774ed71-b5af-47d1-bcab-eeed4d621302",
         "length": 227000,
+        "source": "musicbrainz",
         "title": "Je peux pas me les blairer"
       }
     },
@@ -997,6 +1045,7 @@
         "firstReleaseDate": "2015-06-08",
         "mbid": "07f952f1-7fee-47b8-ad81-a0a96a607c1d",
         "length": 226000,
+        "source": "musicbrainz",
         "title": "Hors la loi"
       }
     },
@@ -1006,6 +1055,7 @@
         "firstReleaseDate": "2015-06-08",
         "mbid": "d2b91037-e168-4bc8-8f08-d5d68df9f4aa",
         "length": 168000,
+        "source": "musicbrainz",
         "title": "Plus de respect"
       }
     },
@@ -1015,6 +1065,7 @@
         "firstReleaseDate": "2015-06-08",
         "mbid": "c2003882-8749-448a-9dbc-79f6821b4fde",
         "length": 202000,
+        "source": "musicbrainz",
         "title": "Mon rêve"
       }
     },
@@ -1024,6 +1075,7 @@
         "firstReleaseDate": "2015-06-08",
         "mbid": "898fc36e-3c20-466c-ab70-9d0d283e8e1c",
         "length": 169000,
+        "source": "musicbrainz",
         "title": "Ça"
       }
     },
@@ -1033,6 +1085,7 @@
         "firstReleaseDate": "2015-06-08",
         "mbid": "ec6d301a-c73b-4e14-8f87-55c241b18f4f",
         "length": 185000,
+        "source": "musicbrainz",
         "title": "Lady"
       }
     },
@@ -1042,6 +1095,7 @@
         "firstReleaseDate": "2015-06-08",
         "mbid": "8ff35b49-1ea4-4cf6-9978-a8328f3716ee",
         "length": 262000,
+        "source": "musicbrainz",
         "title": "Goodbye"
       }
     },
@@ -1051,6 +1105,7 @@
         "firstReleaseDate": "2015-06-08",
         "mbid": "300a3666-f7be-405d-8902-86da2abdb45c",
         "length": 322000,
+        "source": "musicbrainz",
         "title": "C’est ça que je te reproche"
       }
     },
@@ -1060,6 +1115,7 @@
         "firstReleaseDate": "2015-06-08",
         "mbid": "e85864fa-a0d4-402e-bf62-74445fbb4444",
         "length": 159000,
+        "source": "musicbrainz",
         "title": "Je suis comme un autre"
       }
     },
@@ -1069,6 +1125,7 @@
         "firstReleaseDate": "2015-06-08",
         "mbid": "40a2a587-7ccf-4c4d-b27b-4f4485c898cc",
         "length": 233000,
+        "source": "musicbrainz",
         "title": "Tout droit"
       }
     },
@@ -1078,6 +1135,7 @@
         "firstReleaseDate": "2015-06-08",
         "mbid": "4ad9816f-f861-4a49-81f7-829c9acb8683",
         "length": 145000,
+        "source": "musicbrainz",
         "title": "Je finis seul"
       }
     },
@@ -1087,6 +1145,7 @@
         "firstReleaseDate": "2015-06-08",
         "mbid": "13d9cb49-f251-4e56-9392-1960d4a3185f",
         "length": 213000,
+        "source": "musicbrainz",
         "title": "Terter"
       }
     },
@@ -1096,6 +1155,7 @@
         "firstReleaseDate": "2015-06-08",
         "mbid": "c0d7d25f-549a-49a7-b0f2-427146af5703",
         "length": 299000,
+        "source": "musicbrainz",
         "title": "Ils sont jaloux"
       }
     },
@@ -1105,6 +1165,7 @@
         "firstReleaseDate": "2015-06-08",
         "mbid": "ace3aea4-03d2-461b-ab44-b4a7867a9baa",
         "length": 237000,
+        "source": "musicbrainz",
         "title": "Perdu"
       }
     },
@@ -1114,6 +1175,7 @@
         "firstReleaseDate": "2014-04-13",
         "mbid": "27f91baa-5f7a-4c8b-ae57-75978d8872d3",
         "length": 194985,
+        "source": "musicbrainz",
         "title": "Anti BDH"
       }
     },
@@ -1123,6 +1185,7 @@
         "firstReleaseDate": "2014-04-13",
         "mbid": "6f646102-9cc8-4bf4-999f-08e3f1fe6a2b",
         "length": 163921,
+        "source": "musicbrainz",
         "title": "Ça veut ton cash"
       }
     },
@@ -1132,6 +1195,7 @@
         "firstReleaseDate": "2014-04-13",
         "mbid": "949771db-b3c7-4d83-a32f-14bcef0f330b",
         "length": 196200,
+        "source": "musicbrainz",
         "title": "Briganté"
       }
     },
@@ -1141,6 +1205,7 @@
         "firstReleaseDate": "2014-04-13",
         "mbid": "81a923e7-5579-4400-8808-f51fa6ab33d4",
         "length": 122455,
+        "source": "musicbrainz",
         "title": "Je profite"
       }
     },
@@ -1150,6 +1215,7 @@
         "firstReleaseDate": "2014-04-13",
         "mbid": "eb8e1bef-4f77-466a-a4bc-091bba6f253c",
         "length": 281532,
+        "source": "musicbrainz",
         "title": "Loin"
       }
     },
@@ -1159,6 +1225,7 @@
         "firstReleaseDate": "2014-04-13",
         "mbid": "d2347a4b-3979-4b2a-8397-e34684e89a9f",
         "length": 217126,
+        "source": "musicbrainz",
         "title": "L’Histoire"
       }
     },
@@ -1168,6 +1235,7 @@
         "firstReleaseDate": "2014-04-13",
         "mbid": "cc0f61c3-6c08-4e6e-8d8f-8099e5f1b03c",
         "length": 204090,
+        "source": "musicbrainz",
         "title": "N’imite pas"
       }
     },
@@ -1177,6 +1245,7 @@
         "firstReleaseDate": "2014-04-13",
         "mbid": "e970caeb-8480-4a8d-b3d4-c335eb61da8e",
         "length": 206945,
+        "source": "musicbrainz",
         "title": "On survit"
       }
     },
@@ -1186,6 +1255,7 @@
         "firstReleaseDate": "2014-04-13",
         "mbid": "49d4ac74-8368-43ba-8977-242e9dbf2084",
         "length": 286397,
+        "source": "musicbrainz",
         "title": "Posé à la place 2"
       }
     },
@@ -1195,6 +1265,7 @@
         "firstReleaseDate": "2014-04-13",
         "mbid": "0b02b107-ad25-4cca-b363-5040a22eba2c",
         "length": 239715,
+        "source": "musicbrainz",
         "title": "Pour un rien"
       }
     },
@@ -1204,6 +1275,7 @@
         "firstReleaseDate": "2014-04-13",
         "mbid": "dec17b4a-1af2-4d5b-a3d5-a0d525546913",
         "length": 197692,
+        "source": "musicbrainz",
         "title": "Regardes pas de travers"
       }
     },
@@ -1213,6 +1285,7 @@
         "firstReleaseDate": "2014-04-13",
         "mbid": "38575a0f-2fc4-4e6d-b4ca-e7a06b354119",
         "length": 226270,
+        "source": "musicbrainz",
         "title": "Sens interdit"
       }
     },
@@ -1222,6 +1295,7 @@
         "firstReleaseDate": "2014-04-13",
         "mbid": "4b561553-87b6-45df-956c-66bd7b03ad24",
         "length": 293053,
+        "source": "musicbrainz",
         "title": "T’as coulé"
       }
     },
@@ -1231,6 +1305,7 @@
         "firstReleaseDate": "2014-04-13",
         "mbid": "559a1c57-8550-4ce2-8337-9fffeb2c1662",
         "length": 299081,
+        "source": "musicbrainz",
         "title": "Terter"
       }
     },
@@ -1240,6 +1315,7 @@
         "firstReleaseDate": "2014-12-08",
         "mbid": "f9f46751-c5cf-4e56-95c7-d34a2849b9fc",
         "length": 236000,
+        "source": "musicbrainz",
         "title": "Señora"
       }
     },
@@ -1249,6 +1325,7 @@
         "firstReleaseDate": "2014-12-08",
         "mbid": "987218ab-a657-4203-a1a0-faae325a2691",
         "length": 162000,
+        "source": "musicbrainz",
         "title": "Nique-le"
       }
     },
@@ -1258,6 +1335,7 @@
         "firstReleaseDate": "2014-12-08",
         "mbid": "0cec4404-802c-4bd2-964b-e517a1df6094",
         "length": 207787,
+        "source": "musicbrainz",
         "title": "Je trouve pas le sommeil"
       }
     },
@@ -1267,6 +1345,7 @@
         "firstReleaseDate": "2014-07-23",
         "mbid": "90a59c8a-05ed-4e36-8e34-840592ca8740",
         "length": 190584,
+        "source": "musicbrainz",
         "title": "Magique"
       }
     },
@@ -1276,6 +1355,7 @@
         "firstReleaseDate": "2014-05-06",
         "mbid": "41efff18-8fab-4038-9053-e63ca44af2af",
         "length": 214346,
+        "source": "musicbrainz",
         "title": "Problèmes"
       }
     },
@@ -1285,6 +1365,7 @@
         "firstReleaseDate": "2014-09-02",
         "mbid": "e86fcb1a-643b-4dd1-a9ff-86ff1a595661",
         "length": 272064,
+        "source": "musicbrainz",
         "title": "Qu'est-ce que je serai dans dix ans"
       }
     },
@@ -1293,6 +1374,7 @@
       "properties": {
         "firstReleaseDate": "2014-02-24",
         "mbid": "21f911b2-8eff-4dd5-8450-394907614f89",
+        "source": "musicbrainz",
         "title": "J'oublie tout (Twerk Remix)"
       }
     },
@@ -1302,6 +1384,7 @@
         "firstReleaseDate": "2014-10-16",
         "mbid": "0f2ef638-9a5e-4384-b3c7-edc9fb673e52",
         "length": 170064,
+        "source": "musicbrainz",
         "title": "Putain de life"
       }
     },
@@ -1311,6 +1394,7 @@
         "firstReleaseDate": "2015-05-19",
         "mbid": "8a901453-3661-4415-a6d8-66ceba03fef1",
         "length": 198000,
+        "source": "musicbrainz",
         "title": "J'ai pas que ça à faire"
       }
     },
@@ -1320,6 +1404,7 @@
         "firstReleaseDate": "2015-05-19",
         "mbid": "1f1cfe9e-c9ac-4fdc-9116-d9f078c4b180",
         "length": 184000,
+        "source": "musicbrainz",
         "title": "Frangin"
       }
     },
@@ -1329,6 +1414,7 @@
         "firstReleaseDate": "2015-05-19",
         "mbid": "c312c298-ae6e-4902-969a-3dcc2b0319c0",
         "length": 204000,
+        "source": "musicbrainz",
         "title": "Dur dur"
       }
     },
@@ -1338,6 +1424,7 @@
         "firstReleaseDate": "2015-05-19",
         "mbid": "207d5206-386c-4d63-9c3b-90a60b136f7a",
         "length": 217000,
+        "source": "musicbrainz",
         "title": "Là où la vie me mène"
       }
     },
@@ -1347,6 +1434,7 @@
         "firstReleaseDate": "2015-05-19",
         "mbid": "07d9fd92-7937-44f3-a8f4-11015b0ce628",
         "length": 181000,
+        "source": "musicbrainz",
         "title": "À bout de nerfs"
       }
     },
@@ -1356,6 +1444,7 @@
         "firstReleaseDate": "2015-05-19",
         "mbid": "c7de75cb-bf25-4c62-9a0e-da66574886e0",
         "length": 191000,
+        "source": "musicbrainz",
         "title": "Oubliez-moi"
       }
     },
@@ -1365,6 +1454,7 @@
         "firstReleaseDate": "2015-05-19",
         "mbid": "279cb0aa-4fed-4794-8d8f-6241157cd6e4",
         "length": 237000,
+        "source": "musicbrainz",
         "title": "On s'en bat les…"
       }
     },
@@ -1374,6 +1464,7 @@
         "firstReleaseDate": "2015-05-19",
         "mbid": "8e6f5e4a-7ac6-4dd3-9e31-03dbfd992baf",
         "length": 262000,
+        "source": "musicbrainz",
         "title": "Je vise le sommet"
       }
     },
@@ -1383,6 +1474,7 @@
         "firstReleaseDate": "2015-05-19",
         "mbid": "c4b39f54-2f31-4cb9-8891-447fdd972a58",
         "length": 258000,
+        "source": "musicbrainz",
         "title": "Phénomène du ghetto"
       }
     },
@@ -1392,6 +1484,7 @@
         "firstReleaseDate": "2015-05-19",
         "mbid": "52ae9d40-032b-46ba-b7c2-ae37f6878f65",
         "length": 178000,
+        "source": "musicbrainz",
         "title": "Je t'avais dit de l'oublier"
       }
     },
@@ -1401,6 +1494,7 @@
         "firstReleaseDate": "2015-05-19",
         "mbid": "89f64610-27e0-4c1d-851c-f584234047a5",
         "length": 157000,
+        "source": "musicbrainz",
         "title": "Le temps passe"
       }
     },
@@ -1410,6 +1504,7 @@
         "firstReleaseDate": "2015-05-19",
         "mbid": "957c946b-d49a-4fef-b85b-8de9f1563964",
         "length": 289000,
+        "source": "musicbrainz",
         "title": "Je me jette à l'eau"
       }
     },
@@ -1419,6 +1514,7 @@
         "firstReleaseDate": "2015-05-19",
         "mbid": "39d8035a-fcd1-44f6-9c1d-f2f36974e8cb",
         "length": 264000,
+        "source": "musicbrainz",
         "title": "Respecte"
       }
     },
@@ -1428,6 +1524,7 @@
         "firstReleaseDate": "2015-05-19",
         "mbid": "cc30f3c8-1c65-49ee-bb5c-bdf5f053e16c",
         "length": 172000,
+        "source": "musicbrainz",
         "title": "Jack Miel"
       }
     },
@@ -1437,6 +1534,7 @@
         "firstReleaseDate": "2015-05-19",
         "mbid": "4908a715-7945-49c9-a57d-c073ceae1a0f",
         "length": 185000,
+        "source": "musicbrainz",
         "title": "On veut le million"
       }
     },
@@ -1446,6 +1544,7 @@
         "firstReleaseDate": "2014-12-08",
         "mbid": "202b9f94-7c0d-42be-ae8b-93dc471f8af0",
         "length": 223587,
+        "source": "musicbrainz",
         "title": "Message aux rageux"
       }
     },
@@ -1455,6 +1554,7 @@
         "firstReleaseDate": "2014-12-08",
         "mbid": "e0ec00d5-2268-44ff-b1da-b95626bd4ecd",
         "length": 223867,
+        "source": "musicbrainz",
         "title": "J’m’évade"
       }
     },
@@ -1464,6 +1564,7 @@
         "firstReleaseDate": "2014-12-08",
         "mbid": "5420d448-2c3a-4390-a49c-a17ac9590606",
         "length": 199093,
+        "source": "musicbrainz",
         "title": "Ma Life"
       }
     },
@@ -1473,6 +1574,7 @@
         "firstReleaseDate": "2014-12-08",
         "mbid": "60b8a10b-b1ea-4c84-b6da-e73e71632f6e",
         "length": 209733,
+        "source": "musicbrainz",
         "title": "Arrête de parler"
       }
     },
@@ -1482,6 +1584,7 @@
         "firstReleaseDate": "2014-12-08",
         "mbid": "d25f75a4-7660-47b2-9f96-a8d378aad2b3",
         "length": 167347,
+        "source": "musicbrainz",
         "title": "Le regard des gens"
       }
     },
@@ -1491,6 +1594,7 @@
         "firstReleaseDate": "2014-12-08",
         "mbid": "b16a04e8-b28d-41dc-ae7b-08ab16114fc6",
         "length": 258413,
+        "source": "musicbrainz",
         "title": "La fusée"
       }
     },
@@ -1500,6 +1604,7 @@
         "firstReleaseDate": "2014-12-08",
         "mbid": "c690be85-ce30-49e6-82b4-b700af449eee",
         "length": 245400,
+        "source": "musicbrainz",
         "title": "Marseille - Paris"
       }
     },
@@ -1509,6 +1614,7 @@
         "firstReleaseDate": "2014-12-08",
         "mbid": "db21630b-0a6a-498e-a301-85cdd34becb6",
         "length": 286107,
+        "source": "musicbrainz",
         "title": "Seul au monde"
       }
     },
@@ -1518,6 +1624,7 @@
         "firstReleaseDate": "2014-12-08",
         "mbid": "586d1751-d958-470a-b6ad-49cb0e0c7c1d",
         "length": 151533,
+        "source": "musicbrainz",
         "title": "Dans l’game"
       }
     },
@@ -1527,6 +1634,7 @@
         "firstReleaseDate": "2014-12-08",
         "mbid": "65037575-9645-423b-9439-50376296b111",
         "length": 262520,
+        "source": "musicbrainz",
         "title": "Mets les en I"
       }
     },
@@ -1536,6 +1644,7 @@
         "firstReleaseDate": "2014-12-08",
         "mbid": "80b75d5a-5d86-4b49-ac23-14f329f0e8bd",
         "length": 291267,
+        "source": "musicbrainz",
         "title": "Qu’ils me laissent"
       }
     },
@@ -1545,6 +1654,7 @@
         "firstReleaseDate": "2014-12-08",
         "mbid": "cf9876bf-4e99-49cf-bc3f-29d73a741010",
         "length": 302280,
+        "source": "musicbrainz",
         "title": "Lacrizeomic"
       }
     },
@@ -1554,6 +1664,7 @@
         "firstReleaseDate": "2014-12-08",
         "mbid": "51bd0217-d40d-4d1d-92cd-cde53983a27d",
         "length": 248387,
+        "source": "musicbrainz",
         "title": "Poto où t’es"
       }
     },
@@ -1563,6 +1674,7 @@
         "firstReleaseDate": "2014-12-08",
         "mbid": "d40f54c9-b7e5-4f4c-a586-ebbb87eb65bf",
         "length": 200133,
+        "source": "musicbrainz",
         "title": "T’as le boule"
       }
     },
@@ -1572,6 +1684,7 @@
         "firstReleaseDate": "2014-12-08",
         "mbid": "9f3ef9ad-ff76-4056-8683-dac4455ce564",
         "length": 153467,
+        "source": "musicbrainz",
         "title": "Trop de vice"
       }
     },
@@ -1581,6 +1694,7 @@
         "firstReleaseDate": "2014-12-08",
         "mbid": "036559ce-3dea-4b04-bdd9-825019efc3a9",
         "length": 389667,
+        "source": "musicbrainz",
         "title": "Pourquoi tu me fais le gros"
       }
     },
@@ -1590,6 +1704,7 @@
         "firstReleaseDate": "2014-12-08",
         "mbid": "9653a6ff-d964-4e7f-b9ee-8f526dfa23d7",
         "length": 153720,
+        "source": "musicbrainz",
         "title": "Vida Loca"
       }
     },
@@ -1599,6 +1714,7 @@
         "firstReleaseDate": "2015-01-07",
         "mbid": "89057905-d81a-44be-864d-8af589904ee3",
         "length": 251280,
+        "source": "musicbrainz",
         "title": "Y'a Bcp D'absents"
       }
     },
@@ -1608,6 +1724,7 @@
         "firstReleaseDate": "2014-04-13",
         "mbid": "fa1f20e4-ac70-49e5-bbf8-b673b757de86",
         "length": 162453,
+        "source": "musicbrainz",
         "title": "Dans ma paranoïa (version instrumentale)"
       }
     },
@@ -15927,6 +16044,241 @@
       "type": "COLLABORATED_WITH",
       "source": "070a4a70-705b-41ba-a30a-cac559c781f8",
       "target": "43fd8456-e1db-47a0-b973-08ac74e1aa48"
+    },
+    {
+      "type": "RELEASED_BY",
+      "source": "107bdab1-d4d8-4056-a3be-9c11d311a3c4",
+      "target": "6b662c2e-6556-456c-ac61-b8004f571d08"
+    },
+    {
+      "type": "RELEASED_IN",
+      "source": "107bdab1-d4d8-4056-a3be-9c11d311a3c4",
+      "target": "08310658-51eb-3801-80de-5a0739207115"
+    },
+    {
+      "type": "RELEASED_BY",
+      "source": "257d139d-9fc4-4190-9084-df3c4fe2967f",
+      "target": "6b662c2e-6556-456c-ac61-b8004f571d08"
+    },
+    {
+      "type": "RELEASED_IN",
+      "source": "257d139d-9fc4-4190-9084-df3c4fe2967f",
+      "target": "08310658-51eb-3801-80de-5a0739207115"
+    },
+    {
+      "type": "RELEASED_BY",
+      "source": "401cf880-3b3b-476b-ab77-3c040c4da1de",
+      "target": "6b662c2e-6556-456c-ac61-b8004f571d08"
+    },
+    {
+      "type": "RELEASED_IN",
+      "source": "401cf880-3b3b-476b-ab77-3c040c4da1de",
+      "target": "08310658-51eb-3801-80de-5a0739207115"
+    },
+    {
+      "type": "RELEASED_BY",
+      "source": "47f32afd-d1e7-4451-a18d-30f7b85c4b0e",
+      "target": "6f9b5cad-6816-488e-bcd8-3530e3794783"
+    },
+    {
+      "type": "RELEASED_IN",
+      "source": "47f32afd-d1e7-4451-a18d-30f7b85c4b0e",
+      "target": "525d4e18-3d00-31b9-a58b-a146a916de8f"
+    },
+    {
+      "type": "RELEASED_BY",
+      "source": "5268928a-0b96-4b13-8deb-1cb3b1edcbac",
+      "target": "6b662c2e-6556-456c-ac61-b8004f571d08"
+    },
+    {
+      "type": "RELEASED_IN",
+      "source": "5268928a-0b96-4b13-8deb-1cb3b1edcbac",
+      "target": "525d4e18-3d00-31b9-a58b-a146a916de8f"
+    },
+    {
+      "type": "RELEASED_BY",
+      "source": "5a8cb315-9e72-4673-a628-4d95a5d53a8b",
+      "target": "6b662c2e-6556-456c-ac61-b8004f571d08"
+    },
+    {
+      "type": "RELEASED_IN",
+      "source": "5a8cb315-9e72-4673-a628-4d95a5d53a8b",
+      "target": "08310658-51eb-3801-80de-5a0739207115"
+    },
+    {
+      "type": "RELEASED_BY",
+      "source": "5dff6adb-5cc6-492b-a941-acd70183a94e",
+      "target": "6b662c2e-6556-456c-ac61-b8004f571d08"
+    },
+    {
+      "type": "RELEASED_IN",
+      "source": "5dff6adb-5cc6-492b-a941-acd70183a94e",
+      "target": "08310658-51eb-3801-80de-5a0739207115"
+    },
+    {
+      "type": "RELEASED_BY",
+      "source": "76a1bcc8-869f-4121-9421-c2144b7dd2d6",
+      "target": "6b662c2e-6556-456c-ac61-b8004f571d08"
+    },
+    {
+      "type": "RELEASED_IN",
+      "source": "76a1bcc8-869f-4121-9421-c2144b7dd2d6",
+      "target": "08310658-51eb-3801-80de-5a0739207115"
+    },
+    {
+      "type": "RELEASED_BY",
+      "source": "78155347-fcc3-4e37-92e8-300c197b4886",
+      "target": "6b662c2e-6556-456c-ac61-b8004f571d08"
+    },
+    {
+      "type": "RELEASED_IN",
+      "source": "78155347-fcc3-4e37-92e8-300c197b4886",
+      "target": "08310658-51eb-3801-80de-5a0739207115"
+    },
+    {
+      "type": "RELEASED_BY",
+      "source": "7922c456-cb51-43bd-9ef2-58f5edf9f0e2",
+      "target": "6b662c2e-6556-456c-ac61-b8004f571d08"
+    },
+    {
+      "type": "RELEASED_IN",
+      "source": "7922c456-cb51-43bd-9ef2-58f5edf9f0e2",
+      "target": "08310658-51eb-3801-80de-5a0739207115"
+    },
+    {
+      "type": "RELEASED_BY",
+      "source": "7c25f119-9567-4f32-8d23-d66c5ebef779",
+      "target": "6b662c2e-6556-456c-ac61-b8004f571d08"
+    },
+    {
+      "type": "RELEASED_IN",
+      "source": "7c25f119-9567-4f32-8d23-d66c5ebef779",
+      "target": "08310658-51eb-3801-80de-5a0739207115"
+    },
+    {
+      "type": "RELEASED_BY",
+      "source": "86d62fba-7ad8-4f87-b945-465a68fb7f9a",
+      "target": "6b662c2e-6556-456c-ac61-b8004f571d08"
+    },
+    {
+      "type": "RELEASED_IN",
+      "source": "86d62fba-7ad8-4f87-b945-465a68fb7f9a",
+      "target": "08310658-51eb-3801-80de-5a0739207115"
+    },
+    {
+      "type": "RELEASED_BY",
+      "source": "89791050-7277-4a25-950f-187b0295a99b",
+      "target": "6b662c2e-6556-456c-ac61-b8004f571d08"
+    },
+    {
+      "type": "RELEASED_IN",
+      "source": "89791050-7277-4a25-950f-187b0295a99b",
+      "target": "08310658-51eb-3801-80de-5a0739207115"
+    },
+    {
+      "type": "RELEASED_IN",
+      "source": "8dce8ddb-0e26-46a9-b95a-05fa7122e1d2",
+      "target": "08310658-51eb-3801-80de-5a0739207115"
+    },
+    {
+      "type": "RELEASED_BY",
+      "source": "933a817d-6ef9-4378-be54-a198045aa4fd",
+      "target": "6b662c2e-6556-456c-ac61-b8004f571d08"
+    },
+    {
+      "type": "RELEASED_IN",
+      "source": "933a817d-6ef9-4378-be54-a198045aa4fd",
+      "target": "08310658-51eb-3801-80de-5a0739207115"
+    },
+    {
+      "type": "RELEASED_BY",
+      "source": "a95ab2df-0f9a-443d-a851-724230a3b44f",
+      "target": "6b662c2e-6556-456c-ac61-b8004f571d08"
+    },
+    {
+      "type": "RELEASED_IN",
+      "source": "a95ab2df-0f9a-443d-a851-724230a3b44f",
+      "target": "08310658-51eb-3801-80de-5a0739207115"
+    },
+    {
+      "type": "RELEASED_BY",
+      "source": "af68a76b-ee5e-485e-861c-f8bff779ace6",
+      "target": "6b662c2e-6556-456c-ac61-b8004f571d08"
+    },
+    {
+      "type": "RELEASED_IN",
+      "source": "af68a76b-ee5e-485e-861c-f8bff779ace6",
+      "target": "08310658-51eb-3801-80de-5a0739207115"
+    },
+    {
+      "type": "RELEASED_BY",
+      "source": "b2202dda-1ff0-43be-92af-889f70b88fcd",
+      "target": "6b662c2e-6556-456c-ac61-b8004f571d08"
+    },
+    {
+      "type": "RELEASED_IN",
+      "source": "b2202dda-1ff0-43be-92af-889f70b88fcd",
+      "target": "08310658-51eb-3801-80de-5a0739207115"
+    },
+    {
+      "type": "RELEASED_BY",
+      "source": "c134db1a-f723-4571-b83a-c518f92e4e87",
+      "target": "6b662c2e-6556-456c-ac61-b8004f571d08"
+    },
+    {
+      "type": "RELEASED_IN",
+      "source": "c134db1a-f723-4571-b83a-c518f92e4e87",
+      "target": "08310658-51eb-3801-80de-5a0739207115"
+    },
+    {
+      "type": "RELEASED_BY",
+      "source": "dc044b72-b3e1-4719-b407-b94c965aca77",
+      "target": "6b662c2e-6556-456c-ac61-b8004f571d08"
+    },
+    {
+      "type": "RELEASED_IN",
+      "source": "dc044b72-b3e1-4719-b407-b94c965aca77",
+      "target": "08310658-51eb-3801-80de-5a0739207115"
+    },
+    {
+      "type": "RELEASED_BY",
+      "source": "e69b3a68-7e6d-4631-8976-bfc7c51cb49a",
+      "target": "6b662c2e-6556-456c-ac61-b8004f571d08"
+    },
+    {
+      "type": "RELEASED_IN",
+      "source": "e69b3a68-7e6d-4631-8976-bfc7c51cb49a",
+      "target": "08310658-51eb-3801-80de-5a0739207115"
+    },
+    {
+      "type": "RELEASED_BY",
+      "source": "f4f146ee-677f-4e9c-b2e2-2db97b7a2d30",
+      "target": "6b662c2e-6556-456c-ac61-b8004f571d08"
+    },
+    {
+      "type": "RELEASED_IN",
+      "source": "f4f146ee-677f-4e9c-b2e2-2db97b7a2d30",
+      "target": "08310658-51eb-3801-80de-5a0739207115"
+    },
+    {
+      "type": "RELEASED_BY",
+      "source": "f7d03bd2-a6fd-4967-b203-020625acfd90",
+      "target": "6b662c2e-6556-456c-ac61-b8004f571d08"
+    },
+    {
+      "type": "RELEASED_IN",
+      "source": "f7d03bd2-a6fd-4967-b203-020625acfd90",
+      "target": "08310658-51eb-3801-80de-5a0739207115"
+    },
+    {
+      "type": "RELEASED_BY",
+      "source": "fbe0f004-248a-4e5a-b018-a3e941341a65",
+      "target": "6b662c2e-6556-456c-ac61-b8004f571d08"
+    },
+    {
+      "type": "RELEASED_IN",
+      "source": "fbe0f004-248a-4e5a-b018-a3e941341a65",
+      "target": "08310658-51eb-3801-80de-5a0739207115"
     }
   ]
 }

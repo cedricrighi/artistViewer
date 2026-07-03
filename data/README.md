@@ -9,7 +9,7 @@ Dump complet du graphe Neo4j (nœuds + relations) au format JSON :
 ```json
 {
   "exportedAt": "...",
-  "counts": { "nodes": 771, "relationships": 1813 },
+  "counts": { "nodes": 774, "relationships": 1860 },
   "nodes": [{ "label": "Artist", "properties": { "mbid": "...", "name": "..." } }],
   "relationships": [{ "type": "PERFORMED", "source": "<mbid>", "target": "<mbid>" }]
 }
@@ -22,9 +22,10 @@ Composition de cet export :
 | Artist | 93 | PERFORMED | 594 |
 | Recording | 593 | APPEARS_ON | 858 |
 | Release | 73 | FEATURED_ON | 214 |
-| Label | 7 | COLLABORATED_WITH | 116 |
-| Genre | 4 | RELEASED_BY | 26 |
-| Area | 1 | ASSOCIATED_WITH_GENRE | 4 |
+| Label | 9 | COLLABORATED_WITH | 116 |
+| Genre | 4 | RELEASED_BY | 49 |
+| Area | 2 | ASSOCIATED_WITH_GENRE | 4 |
+|  |  | RELEASED_IN | 24 |
 |  |  | FROM_AREA | 1 |
 
 ## Comment le régénérer

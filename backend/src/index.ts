@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import { getDriver, closeDriver } from "./neo4j.js";
+import { getDriver, closeDriver, ensureConstraints } from "./neo4j.js";
 import { searchArtists, lookupArtist, fetchReleasesForArtist } from "./musicbrainz.js";
 import { upsertArtist } from "./artists.js";
 import { importRecordingsForArtist } from "./recordings.js";
@@ -14,8 +14,12 @@ import {
   getArtistGraph,
   listRecordings,
   getRecording,
+  getRecordingArtists,
+  getRecordingReleases,
   listReleases,
   getRelease,
+  getReleaseRecordings,
+  getReleaseArtists,
   getFullGraph,
   getCollaborationsGraph,
   getShortestPath,
@@ -186,6 +190,24 @@ app.get("/api/recordings/:id", async (req, res) => {
   }
 });
 
+app.get("/api/recordings/:id/artists", async (req, res) => {
+  try {
+    res.json(await getRecordingArtists(req.params.id));
+  } catch (error) {
+    console.error(`[GET /api/recordings/${req.params.id}/artists] failed:`, error);
+    res.status(500).json({ message: (error as Error).message });
+  }
+});
+
+app.get("/api/recordings/:id/releases", async (req, res) => {
+  try {
+    res.json(await getRecordingReleases(req.params.id));
+  } catch (error) {
+    console.error(`[GET /api/recordings/${req.params.id}/releases] failed:`, error);
+    res.status(500).json({ message: (error as Error).message });
+  }
+});
+
 app.get("/api/releases", async (req, res) => {
   try {
     res.json(await listReleases(parseLimit(req, 100)));
@@ -205,6 +227,24 @@ app.get("/api/releases/:id", async (req, res) => {
     res.json(release);
   } catch (error) {
     console.error(`[GET /api/releases/${req.params.id}] failed:`, error);
+    res.status(500).json({ message: (error as Error).message });
+  }
+});
+
+app.get("/api/releases/:id/recordings", async (req, res) => {
+  try {
+    res.json(await getReleaseRecordings(req.params.id));
+  } catch (error) {
+    console.error(`[GET /api/releases/${req.params.id}/recordings] failed:`, error);
+    res.status(500).json({ message: (error as Error).message });
+  }
+});
+
+app.get("/api/releases/:id/artists", async (req, res) => {
+  try {
+    res.json(await getReleaseArtists(req.params.id));
+  } catch (error) {
+    console.error(`[GET /api/releases/${req.params.id}/artists] failed:`, error);
     res.status(500).json({ message: (error as Error).message });
   }
 });
@@ -290,6 +330,8 @@ app.get("/api/stats/top-recordings", async (req, res) => {
 const server = app.listen(port, () => {
   console.log(`Backend listening on http://localhost:${port}`);
 });
+
+void ensureConstraints();
 
 process.on("SIGTERM", async () => {
   await closeDriver();

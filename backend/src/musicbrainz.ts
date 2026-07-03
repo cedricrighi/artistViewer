@@ -138,6 +138,11 @@ export interface MusicBrainzLabelInfo {
   label?: { id: string; name: string } | null;
 }
 
+export interface MusicBrainzReleaseEvent {
+  date?: string;
+  area?: MusicBrainzArea | null;
+}
+
 export interface MusicBrainzRelease {
   id: string;
   title: string;
@@ -147,6 +152,7 @@ export interface MusicBrainzRelease {
   "release-group"?: { "primary-type"?: string };
   media?: MusicBrainzMedium[];
   "label-info"?: MusicBrainzLabelInfo[];
+  "release-events"?: MusicBrainzReleaseEvent[];
 }
 
 interface BrowseReleasesResponse {

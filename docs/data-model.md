@@ -17,7 +17,7 @@ MusicBrainz  ──>  Backend (Express)  ──>  Neo4j  ──>  Frontend (Reac
 | Label | Clé d'unicité | Propriétés principales |
 | --- | --- | --- |
 | `Artist` | `mbid` | `name`, `type`, `country`, `disambiguation`, `beginDate`, `endDate` |
-| `Recording` | `mbid` | `title`, `length` (ms), `firstReleaseDate` |
+| `Recording` | `mbid` | `title`, `length` (ms), `firstReleaseDate`, `source` (origine de la donnée : `musicbrainz`) |
 | `Release` | `mbid` | `title`, `date`, `country`, `status`, `releaseType` |
 | `Label` | `mbid` | `name` |
 | `Genre` | `name` | `name` |
@@ -26,6 +26,11 @@ MusicBrainz  ──>  Backend (Express)  ──>  Neo4j  ──>  Frontend (Reac
 Toutes les entités MusicBrainz sont identifiées par leur **MBID**, ce qui
 garantit l'absence de doublons (les imports utilisent `MERGE` sur le MBID).
 `Genre` est mergé sur `name` (MusicBrainz n'expose pas toujours un id stable).
+
+Des **contraintes d'unicité Neo4j** sont créées au démarrage du backend
+(`CREATE CONSTRAINT ... IS UNIQUE` sur chaque clé du tableau ci-dessus) : la
+base garantit l'unicité même en cas d'écritures concurrentes, et ces
+contraintes créent les index utilisés par toutes les recherches par MBID.
 
 ## Relations
 
@@ -38,6 +43,7 @@ garantit l'absence de doublons (les imports utilisent `MERGE` sur le MBID).
 | `RELEASED_BY` | `(:Release)-[:RELEASED_BY]->(:Label)` | la release est éditée par le label |
 | `ASSOCIATED_WITH_GENRE` | `(:Artist)-[:ASSOCIATED_WITH_GENRE]->(:Genre)` | genre associé à l'artiste |
 | `FROM_AREA` | `(:Artist)-[:FROM_AREA]->(:Area)` | zone géographique de l'artiste |
+| `RELEASED_IN` | `(:Release)-[:RELEASED_IN]->(:Area)` | zone de sortie de la release (1er release-event MusicBrainz) |
 
 ## Détection des collaborations
 
@@ -85,7 +91,9 @@ l'artiste importé (pour garder `PERFORMED` exact).
 | GET | `/api/artists` · `/api/artists/:id` | liste / fiche artiste |
 | GET | `/api/artists/:id/recordings` · `/releases` · `/collaborations` | sous-ressources |
 | GET | `/api/recordings` · `/api/recordings/:id` | morceaux |
+| GET | `/api/recordings/:id/artists` · `/releases` | artistes crédités / releases d'un morceau |
 | GET | `/api/releases` · `/api/releases/:id` | releases |
+| GET | `/api/releases/:id/recordings` · `/artists` | morceaux / artistes d'une release |
 | GET | `/api/graph` · `/api/graph/collaborations` · `/api/graph/artists/:id` | graphes |
 | GET | `/api/graph/path?from=&to=` | plus court chemin de collaboration entre deux artistes |
 | GET | `/api/stats/overview` · `top-artists` · `top-collaborations` · `top-genres` · `top-recordings` | analyses |
@@ -111,5 +119,8 @@ l'artiste importé (pour garder `PERFORMED` exact).
   area, dates).
 - L'import est limité à 25 releases par artiste (pagination MusicBrainz) pour
   rester dans des temps de réponse raisonnables.
-- `Area` n'est rattaché qu'à l'artiste (pas encore `RELEASED_IN` pour les
-  releases).
+- `RELEASED_IN` ne retient que le premier release-event MusicBrainz portant
+  une area (une release peut sortir dans plusieurs pays).
+
+Une analyse détaillée du graphe (réponses à la problématique, chiffres,
+biais) est disponible dans [analysis.md](./analysis.md).

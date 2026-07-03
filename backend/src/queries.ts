@@ -79,9 +79,11 @@ export async function getArtistReleases(mbid: string) {
 }
 
 export async function getArtistCollaborations(mbid: string) {
+  // Undirected match: COLLABORATED_WITH is written from the imported artist,
+  // so an artist only known as a collaborator would otherwise show nothing.
   return read(
-    `MATCH (:Artist {mbid: $mbid})-[:COLLABORATED_WITH]->(other:Artist)
-     OPTIONAL MATCH (:Artist {mbid: $mbid})-[:PERFORMED]->(r:Recording)<-[:FEATURED_ON]-(other)
+    `MATCH (me:Artist {mbid: $mbid})-[:COLLABORATED_WITH]-(other:Artist)
+     OPTIONAL MATCH (me)-[:PERFORMED|FEATURED_ON]->(r:Recording)<-[:PERFORMED|FEATURED_ON]-(other)
      RETURN other.mbid AS mbid, other.name AS name, other.country AS country,
             other.type AS type, count(DISTINCT r) AS sharedRecordings
      ORDER BY sharedRecordings DESC, other.name`,
@@ -156,6 +158,33 @@ export async function getRecording(mbid: string) {
   return rows[0] ?? null;
 }
 
+export async function getRecordingArtists(mbid: string) {
+  return read(
+    `MATCH (a:Artist)-[role:PERFORMED|FEATURED_ON]->(:Recording {mbid: $mbid})
+     RETURN a.mbid AS mbid, a.name AS name, a.country AS country,
+            a.type AS type, type(role) AS role
+     ORDER BY role, a.name`,
+    { mbid },
+    (rec) => ({
+      mbid: rec.get("mbid"),
+      name: rec.get("name"),
+      country: rec.get("country"),
+      type: rec.get("type"),
+      role: rec.get("role"),
+    })
+  );
+}
+
+export async function getRecordingReleases(mbid: string) {
+  return read(
+    `MATCH (:Recording {mbid: $mbid})-[:APPEARS_ON]->(rel:Release)
+     RETURN rel { .* } AS release
+     ORDER BY coalesce(rel.date, ''), rel.title`,
+    { mbid },
+    (rec) => rec.get("release")
+  );
+}
+
 export async function listReleases(limit = 100) {
   return read(
     `MATCH (rel:Release)
@@ -189,6 +218,33 @@ export async function getRelease(mbid: string) {
     })
   );
   return rows[0] ?? null;
+}
+
+export async function getReleaseRecordings(mbid: string) {
+  return read(
+    `MATCH (r:Recording)-[:APPEARS_ON]->(:Release {mbid: $mbid})
+     RETURN r { .* } AS recording
+     ORDER BY coalesce(r.firstReleaseDate, ''), r.title`,
+    { mbid },
+    (rec) => rec.get("recording")
+  );
+}
+
+export async function getReleaseArtists(mbid: string) {
+  return read(
+    `MATCH (a:Artist)-[role:PERFORMED|FEATURED_ON]->(:Recording)-[:APPEARS_ON]->(:Release {mbid: $mbid})
+     RETURN a.mbid AS mbid, a.name AS name, a.country AS country, a.type AS type,
+            collect(DISTINCT type(role)) AS roles
+     ORDER BY a.name`,
+    { mbid },
+    (rec) => ({
+      mbid: rec.get("mbid"),
+      name: rec.get("name"),
+      country: rec.get("country"),
+      type: rec.get("type"),
+      roles: rec.get("roles"),
+    })
+  );
 }
 
 // --- Graph (global) ---
